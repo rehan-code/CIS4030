@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/view/pages/login_page.dart';
 import '/view/pages/home_page.dart';
 
 void main() {
@@ -10,11 +11,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Welcome to Flutter',
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
-      
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: const LoginScreen(),
+      ),
     );
   }
 }
