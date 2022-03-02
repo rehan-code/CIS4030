@@ -24,34 +24,39 @@ class _HomeWidgetState extends State<HomeWidget>
         Container(
           color: Colors.deepPurple,
           child: TabBar(
-            labelPadding: const EdgeInsets.only(top: 25),
+            // isScrollable: true,
+            // labelPadding: const EdgeInsets.only(top: 25),
             labelColor: Colors.white,
             indicatorColor: Colors.white,
             indicatorWeight: 5,
             controller: _controller,
             tabs: const [
               Tab(
-                icon: Text(
+                child: Text(
                   "All",
                   style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Tab(
-                icon: Text(
+                child: Text(
                   "PLAYING",
                   style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Tab(
-                icon: Text(
-                  "COMPLETED",
+                child: Text(
+                  "COMPLETE",
                   style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Tab(
-                icon: Text(
+                child: Text(
                   "PLAN TO PLAY",
                   style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ],

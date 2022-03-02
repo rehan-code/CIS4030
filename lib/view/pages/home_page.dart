@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/player_summary.dart';
+import 'package:my_games_tracker/view/widgets/explore.dart';
+import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
 import '/view/widgets/home_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -7,10 +9,7 @@ class HomePage extends StatefulWidget {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
-    Center(
-        child: Text(
-      'Schedule Page',
-    )),
+    Explore(),
     Center(
         child: Text(
       'List Page',
@@ -25,9 +24,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   void _onItemTapped(int index) {
-    setState(() {
+    index == 2 ? _drawerKey.currentState!.openEndDrawer() : setState(() {
       _selectedIndex = index;
     });
   }
@@ -41,41 +41,45 @@ class _HomePageState extends State<HomePage> {
     return MaterialApp(
       title: 'Welcome to Flutter',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: HomePage._widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.white,
-          backgroundColor: Colors.deepPurple,
-          unselectedItemColor: Colors.black,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          selectedFontSize: 0,
-          unselectedFontSize: 0,
-          onTap: _onItemTapped,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                size: 40,
+      home: SafeArea(
+        child: Scaffold(
+          key: _drawerKey,
+          body: HomePage._widgetOptions.elementAt(_selectedIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.white,
+            backgroundColor: Colors.deepPurple,
+            unselectedItemColor: Colors.black,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedFontSize: 0,
+            unselectedFontSize: 0,
+            onTap: _onItemTapped,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  size: 40,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                size: 40,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.search,
+                  size: 40,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.menu,
-                size: 40,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.menu,
+                  size: 40,
+                ),
+                label: '',
               ),
-              label: '',
-            ),
-          ],
+            ],
+          ),
+          endDrawer: SettingsDrawer(),
         ),
       ),
     );
