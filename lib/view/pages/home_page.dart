@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import '/view/widgets/home_widget.dart';
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatefulWidget {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
-    Center(child: Text('Schedule Page',)),
-    Center(child: Text('List Page',)),
+    Center(
+        child: Text(
+      'Schedule Page',
+    )),
+    Center(
+        child: Text(
+      'List Page',
+    )),
   ];
 
   const HomePage({Key? key}) : super(key: key);
@@ -24,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome to Flutter',
       debugShowCheckedModeBanner: false,
@@ -33,25 +39,34 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.white,
-          backgroundColor: Colors.purple,
+          backgroundColor: Colors.deepPurple,
           unselectedItemColor: Colors.black,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home, size: 50,),
+              icon: Icon(
+                Icons.home,
+                size: 50,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search, size: 50,),
+              icon: Icon(
+                Icons.search,
+                size: 50,
+              ),
               label: '',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu, size: 50,),
+              icon: Icon(
+                Icons.menu,
+                size: 50,
+              ),
               label: '',
             ),
           ],
         ),
-      ),      
+      ),
     );
   }
 }
