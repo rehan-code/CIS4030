@@ -41,26 +41,30 @@ class _HomePageState extends State<HomePage> {
           selectedItemColor: Colors.white,
           backgroundColor: Colors.deepPurple,
           unselectedItemColor: Colors.black,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          selectedFontSize: 0,
+          unselectedFontSize: 0,
           onTap: _onItemTapped,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.home,
-                size: 50,
+                size: 40,
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.search,
-                size: 50,
+                size: 40,
               ),
               label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.menu,
-                size: 50,
+                size: 40,
               ),
               label: '',
             ),
