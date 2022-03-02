@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_games_tracker/view/pages/home_page.dart';
-import 'package:steam_login/steam_login.dart';
-
-import 'dart:io';
-
-import '../../core/player_summary.dart';
 import '../pages/steam_webview_login.dart';
 
 class SteamLoginButton extends StatefulWidget {
-  String skey = "6B0AFC5AE812065E96DEBD875C22017E";
-  final String outputFile = "lib/data/playerSummary.txt";
+  const SteamLoginButton({Key? key}) : super(key: key);
 
   @override
   _SteamLoginButton createState() => _SteamLoginButton();
@@ -22,16 +15,6 @@ class _SteamLoginButton extends State<SteamLoginButton> {
     steamID = thisID;
   }
 
-  Map<String, String> convertSummaries(Map<String, dynamic> summaries) {
-    Map<String, String> result = {};
-
-    summaries.forEach((key, value) {
-      result[key] = value.toString();
-    });
-
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,26 +24,9 @@ class _SteamLoginButton extends State<SteamLoginButton> {
           SizedBox(
             width: 150,
             child: ElevatedButton(
-              onPressed: () async {
-                final result = await Navigator.of(context).push(
+              onPressed: () {
+                Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SteamLogin()));
-
-                setState(() {
-                  steamID = result;
-                });
-
-                Map<String, dynamic>? summaryMap =
-                    await GetPlayerSummaries(steamID, widget.skey);
-
-                Map<String, String> convertedSummaries =
-                    convertSummaries(summaryMap);
-
-                convertedSummaries.forEach((key, value) {
-                  print(key + ": " + value);
-                });
-
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => const HomePage()));
               },
               child: const Center(
                   child: Text(

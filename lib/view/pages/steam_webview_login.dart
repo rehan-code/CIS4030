@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:steam_login/steam_login.dart';
 
+import 'home_page.dart';
+
 class SteamLogin extends StatefulWidget {
   @override
   State<SteamLogin> createState() => _SteamLoginState();
@@ -9,6 +11,7 @@ class SteamLogin extends StatefulWidget {
 
 class _SteamLoginState extends State<SteamLogin> {
   final _webView = FlutterWebviewPlugin();
+  String steamID = "";
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,9 @@ class _SteamLoginState extends State<SteamLogin> {
       if (openId.mode == 'id_res') {
         //print("src: " + openId.host.toString() + " dest: " + openId.returnUrl.toString());
         await _webView.close();
-        Navigator.of(context).pop(openId.validate());
+        steamID = await openId.validate();
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomePage(steamID)));
       }
     });
 

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/core/player_summary.dart';
 import '/view/widgets/home_widget.dart';
 
 class HomePage extends StatefulWidget {
+  String steamID;
+
   static const List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
     Center(
@@ -14,7 +17,7 @@ class HomePage extends StatefulWidget {
     )),
   ];
 
-  const HomePage({Key? key}) : super(key: key);
+  HomePage(this.steamID);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -31,6 +34,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: await_only_futures
+    PlayerSummary summary = PlayerSummary(widget.steamID);
+    summary.printSummary();
+
     return MaterialApp(
       title: 'Welcome to Flutter',
       debugShowCheckedModeBanner: false,
