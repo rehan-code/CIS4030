@@ -27,9 +27,11 @@ class _HomePageState extends State<HomePage> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   void _onItemTapped(int index) {
-    index == 2 ? _drawerKey.currentState!.openEndDrawer() : setState(() {
-      _selectedIndex = index;
-    });
+    index == 2
+        ? _drawerKey.currentState!.openEndDrawer()
+        : setState(() {
+            _selectedIndex = index;
+          });
   }
 
   @override

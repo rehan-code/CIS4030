@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 
+import 'game_details.dart';
+
 class RecommendedCard extends StatelessWidget {
   final GameModel game;
   const RecommendedCard({Key? key, required this.game}) : super(key: key);
@@ -11,7 +13,9 @@ class RecommendedCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         // Danial add details widget to onTap here:
-        onTap: () {},
+        onTap: () {
+          showSteamAppBottomSheet(context, game);
+        },
         child: Card(
           child: Stack(
             children: [
@@ -27,7 +31,11 @@ class RecommendedCard extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  decoration: BoxDecoration(borderRadius: BorderRadius.vertical(bottom: Radius.elliptical(5.0, 6.0)), color: Colors.deepPurple,),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.vertical(
+                        bottom: Radius.elliptical(5.0, 6.0)),
+                    color: Colors.deepPurple,
+                  ),
                   width: 250,
                   height: 40,
                   // alignment: Alignment.center,
@@ -36,7 +44,14 @@ class RecommendedCard extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
-                      child: Text(game.title, style: TextStyle(color: Colors.white, fontSize: 14, ), textAlign: TextAlign.center, ),
+                      child: Text(
+                        game.title,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),
