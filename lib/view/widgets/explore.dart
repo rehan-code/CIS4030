@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/view/widgets/game_list.dart';
 import 'package:my_games_tracker/view/widgets/recommended_card.dart';
 
 class Explore extends StatefulWidget {
@@ -55,16 +56,16 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        Container(
-          height: 100,
-          child: TabBarView(
-            controller: _controller,
-            children: [
-              // Rehan replace these with listView:
-              Text("New & Trending"),
-              Text("Top Sellers"),
-              Text("Whats Being Experienced")
-            ],
+        Expanded(
+          child: Container(
+            child: TabBarView(
+              controller: _controller,
+              children: [
+                GameList(),
+                GameList(),
+                GameList(),
+              ],
+            ),
           ),
         )
       ],
