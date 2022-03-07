@@ -18,15 +18,18 @@ class SettingsDrawer extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(imageURL),
-                  radius: 50,
-                ),
+                (imageURL == "")
+                    ? const Icon(Icons.account_circle,
+                        color: Colors.white, size: 80)
+                    : CircleAvatar(
+                        backgroundImage: NetworkImage(imageURL),
+                        radius: 50,
+                      ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Center(
                       child: Text(
-                    accountName,
+                    (accountName == "") ? "User Name" : accountName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
