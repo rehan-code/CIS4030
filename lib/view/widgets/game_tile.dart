@@ -41,7 +41,7 @@ class GameTile extends StatelessWidget {
                     ),
                     Text(
                       "Rating: ${game.rating}\n\nPlaytime: ${game.playtime}",
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ]),
             ),
