@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
-<<<<<<< HEAD
-import 'package:my_games_tracker/view/widgets/status_dropdown.dart';
-=======
 import 'game_options.dart';
-
 import 'game_details.dart';
->>>>>>> 6f2692e04689fde9faba2f70dd6e8c01f9026e27
 
 class GameTile extends StatelessWidget {
   final GameModel game;
@@ -50,7 +45,7 @@ class GameTile extends StatelessWidget {
                     ),
                   ]),
             ),
-            StatusDropdown(),
+            GameOptions(game: game),
           ],
         )),
       ),
