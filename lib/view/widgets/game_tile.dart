@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
-import 'game_tile_options.dart';
+import 'game_options.dart';
 
 import 'game_details.dart';
 
