@@ -37,7 +37,9 @@ class PlayerSummary {
     avatarMedium = stringData['avatarmedium'] as String;
     avatarFull = stringData['avatarfull'] as String;
     avatarHash = stringData['avatarhash'] as String;
-    lastLogoff = stringData['lastlogoff'] as String;
+    lastLogoff = (stringData['lastlogoff'] == null
+        ? stringData['lastlogoff'].toString()
+        : "");
     personaState = stringData['personastate'] as String;
     realName = stringData['realname'] as String;
     primaryClanID = stringData['primaryclanid'] as String;

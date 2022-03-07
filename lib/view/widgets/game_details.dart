@@ -1,6 +1,6 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/view/widgets/game_options.dart';
 
 Future showSteamAppBottomSheet(var context, GameModel game) {
   return showModalBottomSheet(
@@ -62,16 +62,14 @@ class _GameInfoState extends State<GameInfo> {
       builder: (_, controller) => Container(
         padding: const EdgeInsets.all(16.0),
         child: ListView(controller: controller, children: [
-          displayGameInfo(widget.gameModel.title, widget.gameModel.image,
-              widget.gameModel.description),
+          displayGameInfo(widget.gameModel),
         ]),
       ),
     );
   }
 }
 
-Widget displayGameInfo(String title, String imageUrl, String description) =>
-    Column(
+Widget displayGameInfo(GameModel game) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
@@ -79,25 +77,22 @@ Widget displayGameInfo(String title, String imageUrl, String description) =>
           children: [
             Flexible(
               child: Text(
-                title,
+                game.title,
                 style: const TextStyle(fontSize: 24),
               ),
             ),
-            Text(
-              "o",
-              style: const TextStyle(fontSize: 18),
-            ),
+            GameOptions(game: game)
           ],
         ),
         const SizedBox(
           height: 10,
         ),
-        Image.network(imageUrl),
+        Image.network(game.image),
         const SizedBox(
           height: 20,
         ),
         Text(
-          description,
+          game.description,
           style: const TextStyle(fontSize: 18),
         ),
       ],
