@@ -41,7 +41,6 @@ class _HomePageState extends State<HomePage> {
 
   Future<SettingsDrawer> loadDrawerData(PlayerSummary ps) async {
     await Future.delayed(Duration(seconds: 1), () => ps.buildPlayerSummary());
-
     return SettingsDrawer(ps.personaName, ps.avatarFull);
   }
 
