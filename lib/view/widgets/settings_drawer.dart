@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/main.dart';
+import 'package:my_games_tracker/view/pages/login_page.dart';
 
 class SettingsDrawer extends StatelessWidget {
   final String accountName;
@@ -39,7 +41,8 @@ class SettingsDrawer extends StatelessWidget {
                 const Icon(Icons.logout, color: Colors.deepPurple, size: 20),
             title: const Text("Logout"),
             onTap: () {
-              // TODO: Connect this to the logout functionality / screen.
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => MyApp()));
             },
           ),
           ListTile(
