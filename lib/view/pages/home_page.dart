@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/player_summary.dart';
+import 'package:my_games_tracker/view/widgets/error_text.dart';
 import 'package:my_games_tracker/view/widgets/explore.dart';
 import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
 import '/view/widgets/home_widget.dart';
 
 class HomePage extends StatefulWidget {
   String steamID;
+  //SettingsDrawer settingsDrawer;
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
@@ -24,6 +28,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
+
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   void _onItemTapped(int index) {
@@ -34,11 +39,16 @@ class _HomePageState extends State<HomePage> {
           });
   }
 
+  Future<SettingsDrawer> loadDrawerData(PlayerSummary ps) async {
+    await Future.delayed(Duration(seconds: 1), () => ps.buildPlayerSummary());
+
+    return SettingsDrawer(ps.personaName, ps.avatarFull);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ignore: await_only_futures
     PlayerSummary summary = PlayerSummary(widget.steamID);
-    summary.printSummary();
+    //getSummaryData(summary).then((summary) => summary);
 
     return MaterialApp(
       title: 'Welcome to Flutter',
@@ -81,7 +91,30 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          endDrawer: SettingsDrawer(),
+          endDrawer: FutureBuilder(
+            future: loadDrawerData(summary),
+            builder: (BuildContext context, AsyncSnapshot<SettingsDrawer> s) {
+              if (!s.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (s.hasError) {
+                return ErrorText("Error: Could not fetch data for drawer.",
+                    FontWeight.normal, 25.0);
+              } else {
+                final settingsDrawer = s.data;
+
+                if (settingsDrawer != null) {
+                  return settingsDrawer;
+                } else {
+                  return ErrorText(
+                      "Error: A response from server received, but was null.",
+                      FontWeight.normal,
+                      25.0);
+                }
+              }
+            },
+          ),
         ),
       ),
     );
