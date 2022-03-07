@@ -29,23 +29,50 @@ class PlayerSummary {
       stringData[key] = value.toString();
     });
 
-    communityVisibility = stringData['communityvisibilitystate'] as String;
-    profileState = stringData['profilestate'] as String;
-    personaName = stringData['personaname'] as String;
-    profileURL = stringData['profileurl'] as String;
-    avatar = stringData['avatar'] as String;
-    avatarMedium = stringData['avatarmedium'] as String;
-    avatarFull = stringData['avatarfull'] as String;
-    avatarHash = stringData['avatarhash'] as String;
-    lastLogoff = (stringData['lastlogoff'] == null
+    communityVisibility = (stringData['communityvisibilitystate'] == null
+        ? stringData['communityvisibilitystate'].toString()
+        : "");
+    profileState = (stringData['profilestate'] != null
+        ? stringData['profilestate'].toString()
+        : "");
+    personaName = (stringData['personaname'] != null
+        ? stringData['personaname'].toString()
+        : "");
+    profileURL = (stringData['profileurl'] != null
+        ? stringData['profileurl'].toString()
+        : "");
+    avatar =
+        (stringData['avatar'] != null ? stringData['avatar'].toString() : "");
+    avatarMedium = (stringData['avatarmedium'] != null
+        ? stringData['avatarmedium'].toString()
+        : "");
+    avatarFull = (stringData['avatarfull'] != null
+        ? stringData['avatarfull'].toString()
+        : "");
+    avatarHash = (stringData['avatarhash'] == null
+        ? stringData['avatarhash'].toString()
+        : "");
+    lastLogoff = (stringData['lastlogoff'] != null
         ? stringData['lastlogoff'].toString()
         : "");
-    personaState = stringData['personastate'] as String;
-    realName = stringData['realname'] as String;
-    primaryClanID = stringData['primaryclanid'] as String;
-    timeCreated = stringData['timecreated'] as String;
-    personaStateFlags = stringData['personastateflags'] as String;
-    countryCode = stringData['loccountrycode'] as String;
+    personaState = (stringData['personastate'] != null
+        ? stringData['personastate'].toString()
+        : "");
+    realName = (stringData['realname'] != null
+        ? stringData['realname'].toString()
+        : "");
+    primaryClanID = (stringData['primaryclanid'] != null
+        ? stringData['primaryclanid'].toString()
+        : "");
+    timeCreated = (stringData['timecreated'] != null
+        ? stringData['timecreated'].toString()
+        : "");
+    personaStateFlags = (stringData['personastateflags'] != null
+        ? stringData['personastateflags'].toString()
+        : "");
+    countryCode = (stringData['loccountrycode'] != null
+        ? stringData['loccountrycode'].toString()
+        : "");
   }
 
   void printSummary() {
