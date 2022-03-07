@@ -87,7 +87,10 @@ Widget displayGameInfo(GameModel game) => Column(
         const SizedBox(
           height: 10,
         ),
-        Image.network(game.image),
+        ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          child: Image.network(game.image),
+        ),
         const SizedBox(
           height: 20,
         ),
