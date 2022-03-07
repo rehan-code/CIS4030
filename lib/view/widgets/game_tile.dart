@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
-
-import 'game_details.dart';
+import 'package:my_games_tracker/view/widgets/status_dropdown.dart';
 
 class GameTile extends StatelessWidget {
   final GameModel game;
@@ -10,30 +9,42 @@ class GameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(1.0),
       child: Card(
-        child: ListTile(
-          // isThreeLine: true,
-          dense: true,
-          contentPadding: EdgeInsets.all(6),
-          leading: Container(
-            width: 120,
-            height: 120,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(game.image),
-                fit: BoxFit.cover,
+          child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              // padding: EdgeInsets.all(8),
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                image: DecorationImage(
+                  image: NetworkImage(game.image),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
-          title: Text(game.title),
-          subtitle: Text('Rating: ${game.rating}\n\nPlaytime: ${game.playtime}'),
-          trailing: IconButton(
-            onPressed: () => showSteamAppBottomSheet(context, game),
-            icon: Icon(Icons.more_vert),
+          Expanded(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${game.title}",
+                  ),
+                  Text(
+                    "Rating: ${game.rating}\n\nPlaytime: ${game.playtime}",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ]),
           ),
-        ),
-      ),
+          StatusDropdown(),
+        ],
+      )),
     );
   }
 }

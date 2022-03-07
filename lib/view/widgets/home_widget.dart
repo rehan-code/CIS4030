@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/view/widgets/game_list.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -62,30 +63,36 @@ class _HomeWidgetState extends State<HomeWidget>
             ],
           ),
         ),
-        Container(
-          height: 100,
-          child: TabBarView(controller: _controller, children: const [
-            Center(
-                child: Text(
-              "ALL",
-              style: TextStyle(fontSize: 12),
-            )),
-            Center(
-                child: Text(
-              "PLAYING",
-              style: TextStyle(fontSize: 12),
-            )),
-            Center(
-                child: Text(
-              "COMPLETED",
-              style: TextStyle(fontSize: 12),
-            )),
-            Center(
-                child: Text(
-              "PLAN TO PLAY",
-              style: TextStyle(fontSize: 12),
-            )),
-          ]),
+        Expanded(
+          child: Container(
+            height: 100,
+            child: TabBarView(controller: _controller, children: [
+              GameList(),
+              GameList(),
+              GameList(),
+              GameList(),
+              // Center(
+              //     child: Text(
+              //   "ALL",
+              //   style: TextStyle(fontSize: 12),
+              // )),
+              // Center(
+              //     child: Text(
+              //   "PLAYING",
+              //   style: TextStyle(fontSize: 12),
+              // )),
+              // Center(
+              //     child: Text(
+              //   "COMPLETED",
+              //   style: TextStyle(fontSize: 12),
+              // )),
+              // Center(
+              //     child: Text(
+              //   "PLAN TO PLAY",
+              //   style: TextStyle(fontSize: 12),
+              // )),
+            ]),
+          ),
         ),
       ],
     );
