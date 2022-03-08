@@ -33,7 +33,7 @@ class _SteamLoginState extends State<SteamLogin> {
     return WebviewScaffold(
       url: openId.authUrl().toString(),
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).indicatorColor,
         title: const Text("Steam Login"),
       ),
     );

@@ -35,7 +35,7 @@ class RecommendedCard extends StatelessWidget {
                     borderRadius: BorderRadius.vertical(
                         bottom: Radius.elliptical(5.0, 6.0)),
                     // color: Colors.deepPurple,
-                    color: Theme.of(context).primaryColor,
+                    color: Theme.of(context).indicatorColor,
                   ),
                   width: 250,
                   height: 40,

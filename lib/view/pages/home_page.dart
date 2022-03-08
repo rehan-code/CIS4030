@@ -63,9 +63,6 @@ class _HomePageState extends State<HomePage> {
           body: HomePage._widgetOptions.elementAt(_selectedIndex),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
-            // backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-            // selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
-            // unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             selectedFontSize: 0,

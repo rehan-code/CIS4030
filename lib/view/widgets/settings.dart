@@ -24,6 +24,7 @@ class _SettingsState extends State<Settings> {
                 // drawer: PageNavigationWidget(),
                 appBar: AppBar(
                   // iconTheme: Theme.of(context).iconTheme,
+                  backgroundColor: Theme.of(context).indicatorColor,
                   leading: IconButton(
                     icon: Icon(Icons.arrow_back_ios),
                     // color: Theme.of(context).primaryColor,
@@ -47,6 +48,8 @@ class _SettingsState extends State<Settings> {
                           Spacer(),
                           Switch.adaptive(
                             value: themeProvider.isDarkMode, 
+                            activeColor: Theme.of(context).indicatorColor,
+                            inactiveTrackColor: Theme.of(context).indicatorColor,
                             onChanged: (value) {
                               final provider = Provider.of<ThemeProvider>(context, listen: false);
                               provider.toggleTheme(value);

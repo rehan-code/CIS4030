@@ -16,7 +16,7 @@ class SettingsDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration:  BoxDecoration(), //color: Theme.of(context).primaryColor
+            decoration:  BoxDecoration(color: Theme.of(context).indicatorColor), //
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -43,7 +43,7 @@ class SettingsDrawer extends StatelessWidget {
           ),
           ListTile(
             leading:
-                Icon(Icons.logout, size: 20), //color: Theme.of(context).iconTheme.color
+                Icon(Icons.logout, size: 20, color: Theme.of(context).indicatorColor), //color: Theme.of(context).iconTheme.color
             title: const Text("Logout"),
             onTap: () {
               Navigator.of(context).pushReplacement(
@@ -52,7 +52,7 @@ class SettingsDrawer extends StatelessWidget {
           ),
           ListTile(
             leading:
-                Icon(Icons.settings, size: 20), //color: Theme.of(context).iconTheme.color
+                Icon(Icons.settings, size: 20, color: Theme.of(context).indicatorColor), //color: Theme.of(context).iconTheme.color
             title: const Text("Settings"),
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => Settings()));
