@@ -109,7 +109,7 @@ Widget displayLoadingSpinner() => Column(
             height: 50,
             width: 50,
             child: CircularProgressIndicator(
-              color: Colors.blue,
+              // color: Colors.blue,
             ),
           ),
         ),

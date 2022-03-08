@@ -5,6 +5,8 @@ import 'package:my_games_tracker/core/player_summary.dart';
 import 'package:my_games_tracker/view/widgets/error_text.dart';
 import 'package:my_games_tracker/view/widgets/explore.dart';
 import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
+import 'package:provider/provider.dart';
+import '../widgets/theme_provider.dart';
 import '/view/widgets/home_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,19 +50,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     PlayerSummary summary = PlayerSummary(widget.steamID);
     //getSummaryData(summary).then((summary) => summary);
-
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Welcome to Flutter',
       debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.themeMode,
+      theme: MyThemes.lightTheme,
+      darkTheme: MyThemes.darkTheme,
       home: SafeArea(
         child: Scaffold(
           key: _drawerKey,
           body: HomePage._widgetOptions.elementAt(_selectedIndex),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
-            selectedItemColor: Colors.white,
-            backgroundColor: Colors.deepPurple,
-            unselectedItemColor: Colors.black,
+            // backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+            // selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+            // unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
             showSelectedLabels: false,
             showUnselectedLabels: false,
             selectedFontSize: 0,

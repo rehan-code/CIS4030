@@ -23,12 +23,12 @@ class _HomeWidgetState extends State<HomeWidget>
     return Column(
       children: [
         Container(
-          color: Colors.deepPurple,
+          color: Theme.of(context).primaryColor,
           child: TabBar(
             // isScrollable: true,
             // labelPadding: const EdgeInsets.only(top: 25),
-            labelColor: Colors.white,
-            indicatorColor: Colors.white,
+            // labelColor: Theme.of(context).primaryColor,
+            indicatorColor: Theme.of(context).tabBarTheme.labelColor,
             indicatorWeight: 5,
             controller: _controller,
             tabs: const [

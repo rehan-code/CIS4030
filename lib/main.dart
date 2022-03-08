@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/view/pages/login_page.dart';
+import 'package:my_games_tracker/view/widgets/theme_provider.dart';
+import 'package:provider/provider.dart';
 import '/view/pages/home_page.dart';
 
 void main() {
@@ -11,12 +13,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: LoginScreen(),
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      builder: (context, _) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          home: Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: LoginScreen(),
+          ),
+        );
+      },
     );
   }
 }

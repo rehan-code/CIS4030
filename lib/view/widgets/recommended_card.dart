@@ -34,7 +34,8 @@ class RecommendedCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.vertical(
                         bottom: Radius.elliptical(5.0, 6.0)),
-                    color: Colors.deepPurple,
+                    // color: Colors.deepPurple,
+                    color: Theme.of(context).primaryColor,
                   ),
                   width: 250,
                   height: 40,
@@ -47,7 +48,8 @@ class RecommendedCard extends StatelessWidget {
                       child: Text(
                         game.title,
                         style: TextStyle(
-                          color: Colors.white,
+                          // color: Colors.white,
+                          // color: Theme.of(context).secondaryHeaderColor,
                           fontSize: 14,
                         ),
                         textAlign: TextAlign.center,

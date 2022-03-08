@@ -44,10 +44,10 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
           ),
         ),
         Container(
-          color: Colors.deepPurple,
+          // color: Colors.deepPurple,
           child: TabBar(
-            labelColor: Colors.white,
-            indicatorColor: Colors.white,
+            // labelColor: Colors.white,
+            // indicatorColor: Colors.white,
             controller: _controller,
             tabs: [
               Tab(child: Text("New & Trending", textAlign: TextAlign.center,)),
