@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.w500),
           ),
-          SteamLoginButton()
+          SteamLoginButton(themeProvider)
         ],
       ),
     );
