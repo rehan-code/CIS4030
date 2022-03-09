@@ -5,18 +5,20 @@ import 'package:provider/provider.dart';
 import '/view/pages/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  ThemeProvider themeProvider = ThemeProvider();
+  runApp(MyApp(themeProvider));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  ThemeProvider themeProvider;
+  MyApp(this.themeProvider);
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+      create: (context) => themeProvider,
       builder: (context, _) {
-        final themeProvider = Provider.of<ThemeProvider>(context);
+        themeProvider = Provider.of<ThemeProvider>(context);
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           themeMode: themeProvider.themeMode,
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
           darkTheme: MyThemes.darkTheme,
           home: Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: LoginScreen(),
+            body: LoginScreen(themeProvider),
           ),
         );
       },

@@ -17,6 +17,8 @@ class MyThemes {
     primaryColor: Colors.black,
     colorScheme: const ColorScheme.dark(secondary: Colors.deepPurple),
     indicatorColor: Colors.deepPurple,
+    buttonTheme: ButtonThemeData(
+        buttonColor: Colors.deepPurple, colorScheme: const ColorScheme.dark()),
 
     errorColor: Colors.red,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
@@ -36,6 +38,9 @@ class MyThemes {
     colorScheme:
         ColorScheme.light(secondary: Color.fromARGB(255, 33, 168, 155)),
     indicatorColor: Color.fromARGB(255, 33, 168, 155),
+    // buttonTheme:
+    //     ButtonThemeData(buttonColor: Color.fromARGB(255, 33, 168, 155)),
+
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Color.fromARGB(255, 33, 168, 155),
         selectedItemColor: Colors.white,

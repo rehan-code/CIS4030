@@ -41,9 +41,10 @@ class _HomePageState extends State<HomePage> {
           });
   }
 
-  Future<SettingsDrawer> loadDrawerData(PlayerSummary ps) async {
+  Future<SettingsDrawer> loadDrawerData(
+      PlayerSummary ps, ThemeProvider theme) async {
     await Future.delayed(Duration(seconds: 1), () => ps.buildPlayerSummary());
-    return SettingsDrawer(ps.personaName, ps.avatarFull);
+    return SettingsDrawer(ps.personaName, ps.avatarFull, theme);
   }
 
   @override
@@ -94,7 +95,7 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             endDrawer: FutureBuilder(
-              future: loadDrawerData(summary),
+              future: loadDrawerData(summary, themeProvider),
               builder: (BuildContext context, AsyncSnapshot<SettingsDrawer> s) {
                 if (!s.hasData) {
                   return const Center(

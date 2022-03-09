@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/main.dart';
 import 'package:my_games_tracker/view/pages/login_page.dart';
+import 'package:my_games_tracker/view/widgets/theme_provider.dart';
 
 import 'settings.dart';
 
 class SettingsDrawer extends StatelessWidget {
   final String accountName;
   final String imageURL;
+  ThemeProvider themeProvider;
 
-  SettingsDrawer(this.accountName, this.imageURL);
+  SettingsDrawer(this.accountName, this.imageURL, this.themeProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +18,14 @@ class SettingsDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
-            decoration:  BoxDecoration(color: Theme.of(context).indicatorColor), //
+            decoration:
+                BoxDecoration(color: Theme.of(context).indicatorColor), //
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 (imageURL == "")
-                    ? Icon(Icons.account_circle, size: 80) // color: Theme.of(context).primaryColor
+                    ? Icon(Icons.account_circle,
+                        size: 80) // color: Theme.of(context).primaryColor
                     : CircleAvatar(
                         backgroundImage: NetworkImage(imageURL),
                         radius: 50,
@@ -42,20 +46,25 @@ class SettingsDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading:
-                Icon(Icons.logout, size: 20, color: Theme.of(context).indicatorColor), //color: Theme.of(context).iconTheme.color
+            leading: Icon(Icons.logout,
+                size: 20,
+                color: Theme.of(context)
+                    .indicatorColor), //color: Theme.of(context).iconTheme.color
             title: const Text("Logout"),
             onTap: () {
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => MyApp()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => MyApp(themeProvider)));
             },
           ),
           ListTile(
-            leading:
-                Icon(Icons.settings, size: 20, color: Theme.of(context).indicatorColor), //color: Theme.of(context).iconTheme.color
+            leading: Icon(Icons.settings,
+                size: 20,
+                color: Theme.of(context)
+                    .indicatorColor), //color: Theme.of(context).iconTheme.color
             title: const Text("Settings"),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Settings()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => Settings()));
             },
           ),
         ],

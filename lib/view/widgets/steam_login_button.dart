@@ -32,12 +32,9 @@ class _SteamLoginButton extends State<SteamLoginButton> {
                   child: Text(
                 "Login With Steam",
                 style: TextStyle(
-                  // color: Colors.white,
-                ),
+                    // color: Colors.white,
+                    ),
               )),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(
-                      const Color.fromRGBO(17, 17, 17, 1.0))),
             ),
           ),
           // Center(
