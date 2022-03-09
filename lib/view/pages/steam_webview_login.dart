@@ -21,8 +21,9 @@ class _SteamLoginState extends State<SteamLogin> {
         //print("src: " + openId.host.toString() + " dest: " + openId.returnUrl.toString());
         await _webView.close();
         steamID = await openId.validate();
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage(steamID)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomePage(steamID),
+        ));
       }
     });
 

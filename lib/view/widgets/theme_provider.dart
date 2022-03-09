@@ -27,11 +27,10 @@ class MyThemes {
   static final lightTheme = ThemeData(
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
-    colorScheme:
-        const ColorScheme.light(secondary: Color.fromARGB(255, 33, 168, 155)),
-    indicatorColor: const Color.fromARGB(255, 33, 168, 155),
+    colorScheme: const ColorScheme.light(secondary: Colors.deepPurple),
+    indicatorColor: Colors.deepPurple,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color.fromARGB(255, 33, 168, 155),
+        backgroundColor: Colors.deepPurple,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black),
     errorColor: Colors.red,

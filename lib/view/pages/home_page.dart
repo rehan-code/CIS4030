@@ -98,8 +98,9 @@ class _HomePageState extends State<HomePage> {
               future: loadDrawerData(summary, themeProvider),
               builder: (BuildContext context, AsyncSnapshot<SettingsDrawer> s) {
                 if (!s.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Center(
+                    child: CircularProgressIndicator(
+                        color: Theme.of(context).indicatorColor),
                   );
                 } else if (s.hasError) {
                   return ErrorText("Error: Could not fetch data for drawer.",
