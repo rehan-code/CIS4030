@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
+
+import '../../core/game_data.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -67,10 +70,10 @@ class _HomeWidgetState extends State<HomeWidget>
           child: Container(
             height: 100,
             child: TabBarView(controller: _controller, children: [
-              GameList(),
-              GameList(),
-              GameList(),
-              GameList(),
+              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
               // Center(
               //     child: Text(
               //   "ALL",

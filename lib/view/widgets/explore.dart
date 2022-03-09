@@ -3,6 +3,7 @@ import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
 import 'package:my_games_tracker/view/widgets/recommended_card.dart';
+import 'package:my_games_tracker/view/widgets/search_bar.dart';
 
 class Explore extends StatefulWidget {
   const Explore({Key? key}) : super(key: key);
@@ -28,9 +29,15 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Recommended:",
-            style: TextStyle(fontSize: 18),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Recommended:",
+                style: TextStyle(fontSize: 18),
+              ),
+              IconButton(onPressed: () {showSearch(context: context, delegate: SearchBar());}, icon: Icon(Icons.search)),
+            ],
           ),
         ),
         Container(
@@ -61,13 +68,13 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: _controller,
               children: [
-                GameList(),
-                GameList(),
-                GameList(),
+                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
               ],
             ),
           ),
-        )
+        ),
       ],
     );
   }
