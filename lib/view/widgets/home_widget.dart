@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
@@ -14,11 +16,19 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
+  List<GameModel> allGames =
+      game_data.map((game) => GameModel.fromJSON(game)).toList();
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 4, vsync: this);
+    Timer.periodic(
+        const Duration(seconds: 1),
+        (_) => setState(() {
+              allGames =
+                  game_data.map((game) => GameModel.fromJSON(game)).toList();
+            }));
   }
 
   @override
@@ -70,30 +80,22 @@ class _HomeWidgetState extends State<HomeWidget>
           child: Container(
             height: 100,
             child: TabBarView(controller: _controller, children: [
-              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-              GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-              // Center(
-              //     child: Text(
-              //   "ALL",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "PLAYING",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "COMPLETED",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "PLAN TO PLAY",
-              //   style: TextStyle(fontSize: 12),
-              // )),
+              GameList(
+                  games: game_data
+                      .map((game) => GameModel.fromJSON(game))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('playing'))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('complete'))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('planned'))
+                      .toList()),
             ]),
           ),
         ),

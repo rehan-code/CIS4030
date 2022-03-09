@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 
 class GameOptions extends StatefulWidget {
@@ -17,6 +18,12 @@ class _GameOptionsState extends State<GameOptions> {
         setState(() {
           widget.game.category = result;
         });
+        for (var game in game_data) {
+          if (game['title'] as String == widget.game.title) {
+            game['category'] = result;
+            break;
+          }
+        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
