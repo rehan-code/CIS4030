@@ -21,12 +21,12 @@ class SearchBar extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return GameList(games: allGames.where((game) => game.title.toLowerCase().startsWith(query.toLowerCase())).toList());
+    return GameList(games: allGames.where((game) => game.title.toLowerCase().contains(query.toLowerCase())).toList());
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<GameModel> suggestionList = query.isEmpty ? allGames : allGames.where((game) => game.title.toLowerCase().startsWith(query.toLowerCase())).toList();
+    List<GameModel> suggestionList = query.isEmpty ? allGames : allGames.where((game) => game.title.toLowerCase().contains(query.toLowerCase())).toList();
 
     return GameList(games: suggestionList);
   }
