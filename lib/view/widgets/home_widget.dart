@@ -19,16 +19,24 @@ class _HomeWidgetState extends State<HomeWidget>
   List<GameModel> allGames =
       game_data.map((game) => GameModel.fromJSON(game)).toList();
 
+  late Timer _timer;
+
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 4, vsync: this);
-    Timer.periodic(
+    _timer = Timer.periodic(
         const Duration(seconds: 1),
         (_) => setState(() {
               allGames =
                   game_data.map((game) => GameModel.fromJSON(game)).toList();
             }));
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
