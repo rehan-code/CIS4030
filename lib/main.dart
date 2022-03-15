@@ -12,9 +12,23 @@ Future<void> main() async {
   runApp(MyApp(themeProvider));
 }
 
+Future<Map<String, dynamic>> _getFirebaseUsers() async {
+  Map<String, dynamic> queryResults = {};
+  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
+  QuerySnapshot usersQuery = await usersRef.get();
+
+  usersQuery.docs.forEach((document) {
+    queryResults[document.id] = document.data();
+  });
+
+  return queryResults;
+}
+
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _myGamesTrackerDB = Firebase.initializeApp();
+  Map<String, dynamic> testData = {};
   ThemeProvider themeProvider;
+
   MyApp(this.themeProvider);
 
   @override
@@ -36,25 +50,6 @@ class MyApp extends StatelessWidget {
                 return Text("Couldn't load Firebase Database!");
               } else if (snapshot.hasData) {
                 print("FIREBASE INTIALIZED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                // FirebaseFirestore f = FirebaseFirestore.instance;
-
-                // CollectionReference users =
-                //     FirebaseFirestore.instance.collection('users');
-
-                // FutureBuilder(
-                //   future: users.doc('NcmeaiDE31ShNGUFBuq2').get(),
-                //   builder: (context, snapshot) {
-                //     if (snapshot.hasError) {
-                //       print("Error getting data...");
-                //     } else if (snapshot.connectionState ==
-                //         ConnectionState.done) {
-                //       Map<String, dynamic> d =
-                //           snapshot.data as Map<String, dynamic>;
-                //       print("GOT DATA BOIIIIISSSSSSSSS!!!!!!!!");
-                //     }
-                //     return Container();
-                //   },
-                // );
 
                 return Scaffold(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
