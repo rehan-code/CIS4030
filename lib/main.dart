@@ -12,18 +12,6 @@ Future<void> main() async {
   runApp(MyApp(themeProvider));
 }
 
-Future<Map<String, dynamic>> _getFirebaseUsers() async {
-  Map<String, dynamic> queryResults = {};
-  CollectionReference usersRef = FirebaseFirestore.instance.collection('users');
-  QuerySnapshot usersQuery = await usersRef.get();
-
-  usersQuery.docs.forEach((document) {
-    queryResults[document.id] = document.data();
-  });
-
-  return queryResults;
-}
-
 class MyApp extends StatelessWidget {
   final Future<FirebaseApp> _myGamesTrackerDB = Firebase.initializeApp();
   Map<String, dynamic> testData = {};
@@ -50,7 +38,6 @@ class MyApp extends StatelessWidget {
                 return Text("Couldn't load Firebase Database!");
               } else if (snapshot.hasData) {
                 print("FIREBASE INTIALIZED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
                 return Scaffold(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   body: LoginScreen(themeProvider),
