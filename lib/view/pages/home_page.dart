@@ -8,11 +8,34 @@ import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
 import 'package:provider/provider.dart';
 import '../widgets/theme_provider.dart';
 import '/view/widgets/home_widget.dart';
+import '../../services/firestore.dart';
+
+class Random extends StatefulWidget {
+  final String steamID;
+  const Random({Key? key, required this.steamID}) : super(key: key);
+
+  @override
+  State<Random> createState() => RandomState();
+}
+
+class RandomState extends State<Random> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
 
 class HomePage extends StatefulWidget {
-  String steamID;
+  final String steamID;
   //SettingsDrawer settingsDrawer;
 
+  const HomePage({Key? key, required this.steamID}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   static const List<Widget> _widgetOptions = <Widget>[
     HomeWidget(),
     Explore(),
@@ -21,14 +44,6 @@ class HomePage extends StatefulWidget {
       'List Page',
     )),
   ];
-
-  HomePage(this.steamID);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -62,7 +77,7 @@ class _HomePageState extends State<HomePage> {
         home: SafeArea(
           child: Scaffold(
             key: _drawerKey,
-            body: HomePage._widgetOptions.elementAt(_selectedIndex),
+            body: _widgetOptions.elementAt(_selectedIndex),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _selectedIndex,
               showSelectedLabels: false,
