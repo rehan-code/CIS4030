@@ -10,19 +10,8 @@ List game_data = [
     "category": "playing",
   },
   {
-    "title": "Pokémon Brilliant Diamond / Shinning Pearl",
-    "image":
-        "https://assets.pokemon.com/assets/cms2/img/video-games/video-games/pokemon_brilliant_diamond_shining_pearl/brilliant-diamond-shining-pearl-169-en.jpg",
-    "description":
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "hours played": 30,
-    "rating": 4,
-    "category": "complete",
-  },
-  {
     "title": "Momotaro Dentetsu: Showa, Heisei, Reiwa mo Teiban!",
-    "image":
-        "https://nintendoeverything.com/wp-content/uploads/momotaro-2.jpg",
+    "image": "https://nintendoeverything.com/wp-content/uploads/momotaro-2.jpg",
     "description":
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "hours played": 20,
@@ -41,8 +30,7 @@ List game_data = [
   },
   {
     "title": "RingFit Adventure",
-    "image":
-        "https://ringfitadventure.nintendo.com/assets/img/share-fb.jpg",
+    "image": "https://ringfitadventure.nintendo.com/assets/img/share-fb.jpg",
     "description":
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "hours played": 20,
@@ -91,8 +79,7 @@ List game_data = [
   },
   {
     "title": "Super Smash Bros. Ultimate",
-    "image":
-        "https://www.smashbros.com/assets_v2/img/movie/20180613_1.jpg",
+    "image": "https://www.smashbros.com/assets_v2/img/movie/20180613_1.jpg",
     "description":
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
     "hours played": 20,

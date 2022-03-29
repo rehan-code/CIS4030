@@ -56,15 +56,8 @@ class _HomePageState extends State<HomePage> {
           });
   }
 
-  Future<SettingsDrawer> loadDrawerData(
-      PlayerSummary ps, ThemeProvider theme) async {
-    await Future.delayed(Duration(seconds: 1), () => ps.buildPlayerSummary());
-    return SettingsDrawer(ps.personaName, ps.avatarFull, theme);
-  }
-
   @override
   Widget build(BuildContext context) {
-    PlayerSummary summary = PlayerSummary(widget.steamID);
     final themeProvider = Provider.of<ThemeProvider>(context);
     return WillPopScope(
       onWillPop: () async => false,
@@ -109,9 +102,11 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            endDrawer: FutureBuilder(
-              future: loadDrawerData(summary, themeProvider),
-              builder: (BuildContext context, AsyncSnapshot<SettingsDrawer> s) {
+            endDrawer:
+                //  SettingsDrawer(FireStore.getPlayerSummary(widget.steamID), themeProvider)
+                FutureBuilder<PlayerSummary>(
+              future: FireStore.getPlayerSummary(widget.steamID),
+              builder: (BuildContext context, AsyncSnapshot<PlayerSummary> s) {
                 if (!s.hasData) {
                   return Center(
                     child: CircularProgressIndicator(
@@ -121,16 +116,16 @@ class _HomePageState extends State<HomePage> {
                   return ErrorText("Error: Could not fetch data for drawer.",
                       FontWeight.normal, 25.0);
                 } else {
-                  final settingsDrawer = s.data;
+                  return SettingsDrawer(s.data!, themeProvider);
 
-                  if (settingsDrawer != null) {
-                    return settingsDrawer;
-                  } else {
-                    return ErrorText(
-                        "Error: A response from server received, but was null.",
-                        FontWeight.normal,
-                        25.0);
-                  }
+                  // if (settingsDrawer != null) {
+                  //   return settingsDrawer;
+                  // } else {
+                  //   return ErrorText(
+                  //       "Error: A response from server received, but was null.",
+                  //       FontWeight.normal,
+                  //       25.0);
+                  // }
                 }
               },
             ),

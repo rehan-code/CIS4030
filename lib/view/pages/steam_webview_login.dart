@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:my_games_tracker/services/firestore.dart';
 import 'package:steam_login/steam_login.dart';
+import '../../core/game_data.dart';
+import '../../core/game_model.dart';
 import '../../services/firestore.dart';
 
 import 'home_page.dart';
@@ -23,7 +25,12 @@ class _SteamLoginState extends State<SteamLogin> {
         //print("src: " + openId.host.toString() + " dest: " + openId.returnUrl.toString());
         await _webView.close();
         steamID = await openId.validate();
-        await FireStore.addSteamID(steamID);
+        if (steamID != "") {
+          List<GameModel> allGames =
+              game_data.map((game) => GameModel.fromJSON(game)).toList();
+          await FireStore.addSteamID(steamID);
+          await FireStore.updateAllUserGames(steamID, allGames);
+        }
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => HomePage(steamID: steamID),
         ));

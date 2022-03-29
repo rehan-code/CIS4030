@@ -20,4 +20,15 @@ class GameModel {
 
     return GameModel(title, image, description, playtime, rating, category);
   }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'title': title,
+      'image': image,
+      'description': description,
+      'playtime': playtime,
+      'rating': rating,
+      'category': category
+    };
+  }
 }
