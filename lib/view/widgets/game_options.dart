@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/services/firestore.dart';
 
 class GameOptions extends StatefulWidget {
   final GameModel game;
@@ -15,38 +16,40 @@ class _GameOptionsState extends State<GameOptions> {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: (String result) {
+        FireStore.updateCategory(
+            widget.game.appid, widget.game.category, result);
         setState(() {
           widget.game.category = result;
         });
-        for (var game in game_data) {
-          if (game['title'] as String == widget.game.title) {
-            game['category'] = result;
-            break;
-          }
-        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           value: 'none',
           child: MenuTile(
-              title: 'None', selected: (widget.game.category == "none")),
+            title: 'None',
+            selected: (widget.game.category == "none"),
+          ),
         ),
         PopupMenuItem<String>(
           value: 'playing',
           child: MenuTile(
-              title: 'Playing', selected: (widget.game.category == "playing")),
+            title: 'Playing',
+            selected: (widget.game.category == "playing"),
+          ),
         ),
         PopupMenuItem<String>(
           value: 'complete',
           child: MenuTile(
-              title: 'Complete',
-              selected: (widget.game.category == "complete")),
+            title: 'Complete',
+            selected: (widget.game.category == "complete"),
+          ),
         ),
         PopupMenuItem<String>(
           value: 'planned',
           child: MenuTile(
-              title: 'Plan To Play',
-              selected: (widget.game.category == "planned")),
+            title: 'Plan To Play',
+            selected: (widget.game.category == "planned"),
+          ),
         ),
       ],
     );

@@ -6,14 +6,19 @@ import '../../core/game_model.dart';
 
 class GameList extends StatelessWidget {
   final List<GameModel> games;
-  const GameList({Key? key, required this.games}) : super(key: key);
+  final bool isExplore;
+  const GameList({Key? key, required this.games, required this.isExplore})
+      : super(key: key);
   @override
   Widget build(BuildContext build) {
     return SingleChildScrollView(
       child: Column(
         children: [
           for (var game in games)
-            GameTile(game),
+            GameTile(
+              game: game,
+              isExplore: isExplore,
+            ),
         ],
       ),
     );

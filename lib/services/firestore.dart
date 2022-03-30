@@ -28,26 +28,87 @@ class FireStore {
         .set(summary.toJSON())
         .then((value) => print("Steam ID added!"))
         .catchError((error) => print("Couldn't add steamID to DB: $error"));
+
+    // users
+    //     .doc(steamID)
+    //     .collection("playingGames")
+    //     .add({})
+    //     .then((value) => print("Playing Games added!"))
+    //     .catchError(
+    //         (error) => print("Couldn't add playing games to DB: $error"));
+
+    // users
+    //     .doc(steamID)
+    //     .collection("completedGames")
+    //     .add({})
+    //     .then((value) => print("Completed Games added!"))
+    //     .catchError(
+    //         (error) => print("Couldn't add completed games to DB: $error"));
+
+    // users
+    //     .doc(steamID)
+    //     .collection("planToPlayGames")
+    //     .add({})
+    //     .then((value) => print("Plan to Play Games added!"))
+    //     .catchError(
+    //         (error) => print("Couldn't add plan to play games to DB: $error"));
+
+    // users
+    //     .doc(steamID)
+    //     .collection("boughtGames")
+    //     .add({})
+    //     .then((value) => print("Bought Games added!"))
+    //     .catchError(
+    //         (error) => print("Couldn't add bought games to DB: $error"));
   }
 
   static Future<void> updateAllUserGames(
-      String steamID, List<GameModel> updatedUserGames) async {
-    for (var game in updatedUserGames) {
-      await users
-          .doc(steamID)
-          .collection("games")
-          .doc(game.title)
-          .set(game.toJSON())
-          .then((value) => print(game.title + " added!"))
-          .catchError((error) => print("Couldn't add steamID to DB: $error"));
-    }
+      String steamID, List<GameModel> newLibrary) async {
+    List<GameModel> currLibrary = [];
+    List<GameModel> updatedGamesList = [];
 
-    // return users
-    //     .doc(steamID)
-    //     .collection("games")
-    //     .(newGames)
-    //     .then((value) => print("Steam ID added!"))
-    //     .catchError((error) => print("Couldn't add steamID to DB: $error"));
+    try {
+      QuerySnapshot snapshot =
+          await users.doc(steamID).collection("allGames").get();
+      if (snapshot.size > 0) {
+        for (var doc in snapshot.docs) {
+          Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+          currLibrary.add(GameModel.fromFirebase(data));
+        }
+        updatedGamesList.addAll(currLibrary
+            .where((oldGame) => (newLibrary
+                .where((newGame) => newGame.appid == oldGame.appid)).isNotEmpty)
+            .toList());
+
+        updatedGamesList.addAll(newLibrary
+            .where((newGame) => (currLibrary
+                .where((oldGame) => newGame.appid == oldGame.appid)).isEmpty)
+            .toList());
+        print(updatedGamesList);
+      } else {
+        updatedGamesList = newLibrary;
+      }
+
+      // for(int i = 0; i < newLibrary.length; i++){
+      //   if(currLibrary.contains(newLibrary[i].appid)){
+      //     updatedGamesList.add(newLibrary[i]);
+      //   }
+      // }
+      for (var game in updatedGamesList) {
+        await users
+            .doc(steamID)
+            .collection("allGames")
+            .doc(game.appid)
+            .set(game.toJSON())
+            .then((value) => print(game.name + " added!"))
+            .catchError((error) => print(
+                "Couldn't update User with steamID: '" +
+                    steamID +
+                    "'s games to DB: $error"));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   static Future<PlayerSummary> getPlayerSummary(String steamID) async {
@@ -68,4 +129,7 @@ class FireStore {
       return null as PlayerSummary;
     }
   }
+
+  static Future<void> updateCategory(
+      String gameId, String currCategory, String newCategory) async {}
 }

@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/player_summary.dart';
+import 'package:my_games_tracker/services/steamAPI.dart';
 import 'package:my_games_tracker/view/widgets/error_text.dart';
 import 'package:my_games_tracker/view/widgets/explore.dart';
 import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
 import 'package:provider/provider.dart';
+import '../../core/game_model.dart';
 import '../widgets/theme_provider.dart';
 import '/view/widgets/home_widget.dart';
 import '../../services/firestore.dart';
@@ -36,14 +38,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeWidget(),
-    Explore(),
-    Center(
-        child: Text(
-      'List Page',
-    )),
-  ];
+  // ignore: prefer_final_fields
+  static List<Widget> _widgetOptions = [];
+
   int _selectedIndex = 0;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -54,6 +51,38 @@ class _HomePageState extends State<HomePage> {
         : setState(() {
             _selectedIndex = index;
           });
+  }
+
+  @override
+  void initState() {
+    _widgetOptions.addAll(<Widget>[
+      FutureBuilder<List<GameModel>>(
+        future: SteamAPI.getPlayerLibrary(widget.steamID),
+        builder: (BuildContext context, AsyncSnapshot<List<GameModel>> s) {
+          if (!s.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                  color: Theme.of(context).indicatorColor),
+            );
+          } else if (s.hasError) {
+            return ErrorText("Error: Could not fetch the player's library.",
+                FontWeight.normal, 25.0);
+          } else {
+            print("User Library: " + (s.data!).toString());
+            FireStore.updateAllUserGames(widget.steamID, s.data!);
+            return HomeWidget(allGames: s.data!);
+          }
+        },
+      ),
+
+      // HomeWidget(),
+      Explore(),
+      Center(
+          child: Text(
+        'List Page',
+      )),
+    ]);
+    super.initState();
   }
 
   @override

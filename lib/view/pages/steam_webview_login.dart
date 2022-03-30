@@ -26,10 +26,11 @@ class _SteamLoginState extends State<SteamLogin> {
         await _webView.close();
         steamID = await openId.validate();
         if (steamID != "") {
-          List<GameModel> allGames =
-              game_data.map((game) => GameModel.fromJSON(game)).toList();
+          List<GameModel> allGames = game_data
+              .map((game) => GameModel.fromSteamLibraryAPI(game))
+              .toList();
           await FireStore.addSteamID(steamID);
-          await FireStore.updateAllUserGames(steamID, allGames);
+          // await FireStore.updateAllUserGames(steamID, allGames);
         }
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => HomePage(steamID: steamID),

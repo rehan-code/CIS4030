@@ -13,6 +13,10 @@ class _StatusDropdown extends State<StatusDropdown> {
     return PopupMenuButton(
       itemBuilder: (context) => [
         PopupMenuItem(
+          child: Text("All"),
+          onTap: () {},
+        ),
+        PopupMenuItem(
           child: Text("Playing"),
           onTap: () {},
         ),
@@ -24,10 +28,6 @@ class _StatusDropdown extends State<StatusDropdown> {
           child: Text("Plan to Play"),
           onTap: () {},
         ),
-        // PopupMenuItem(
-        //   child: Text("All"),
-        //   onTap: () {},
-        // ),
       ],
     );
   }

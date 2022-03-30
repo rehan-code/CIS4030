@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_options.dart';
 
-Future showSteamAppBottomSheet(var context, GameModel game) {
+Future showSteamAppBottomSheet(var context, GameModel game, bool isExplore) {
   return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -10,16 +10,19 @@ Future showSteamAppBottomSheet(var context, GameModel game) {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (context) => GameInfo(
+            isExplore: isExplore,
             gameModel: game,
           ));
 }
 
 class GameInfo extends StatefulWidget {
   final GameModel gameModel;
+  final bool isExplore;
 
   GameInfo({
     Key? key,
     required this.gameModel,
+    required this.isExplore,
   }) : super(key: key);
 
   @override
@@ -77,7 +80,7 @@ Widget displayGameInfo(GameModel game) => Column(
           children: [
             Flexible(
               child: Text(
-                game.title,
+                game.name,
                 style: const TextStyle(fontSize: 24),
               ),
             ),
@@ -87,12 +90,12 @@ Widget displayGameInfo(GameModel game) => Column(
         const SizedBox(
           height: 10,
         ),
-        Image.network(game.image),
+        Image.network(game.header_image),
         const SizedBox(
           height: 20,
         ),
         Text(
-          game.description,
+          game.detailed_description,
           style: const TextStyle(fontSize: 18),
         ),
       ],
