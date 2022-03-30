@@ -13,7 +13,7 @@ class ErrorText extends StatelessWidget {
       child: Text(
         errorText,
         style: TextStyle(
-          color: Colors.red,
+          color: Theme.of(context).errorColor,
           fontSize: fontSize,
           fontWeight: fontWeight,
         ),

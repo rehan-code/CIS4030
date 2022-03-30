@@ -1,22 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/view/pages/login_page.dart';
+import 'package:my_games_tracker/view/widgets/theme_provider.dart';
+import 'package:provider/provider.dart';
 import '/view/pages/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  ThemeProvider themeProvider = ThemeProvider();
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp(themeProvider));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final Future<FirebaseApp> _myGamesTrackerDB = Firebase.initializeApp();
+  Map<String, dynamic> testData = {};
+  ThemeProvider themeProvider;
+
+  MyApp(this.themeProvider);
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: LoginScreen(),
-      ),
+    return ChangeNotifierProvider(
+      create: (context) => themeProvider,
+      builder: (context, _) {
+        themeProvider = Provider.of<ThemeProvider>(context);
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          themeMode: themeProvider.themeMode,
+          theme: MyThemes.lightTheme,
+          darkTheme: MyThemes.darkTheme,
+          home: FutureBuilder(
+            future: _myGamesTrackerDB,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print("Firebase Error: ${snapshot.error.toString()}");
+                return Text("Couldn't load Firebase Database!");
+              } else if (snapshot.hasData) {
+                print("FIREBASE INTIALIZED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                return Scaffold(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  body: LoginScreen(themeProvider),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
+        );
+      },
     );
   }
 }

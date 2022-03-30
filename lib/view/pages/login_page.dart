@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/view/widgets/steam_login_button.dart';
+import 'package:my_games_tracker/view/widgets/theme_provider.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  ThemeProvider themeProvider;
+
+  LoginScreen(this.themeProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,7 @@ class LoginScreen extends StatelessWidget {
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.w500),
           ),
-          SteamLoginButton()
+          SteamLoginButton(themeProvider)
         ],
       ),
     );

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1016139102406",
+    "project_id": "mygamestrackerdb",
+    "storage_bucket": "mygamestrackerdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016139102406:android:80f36251171ab06dce7fc7",
+        "android_client_info": {
+          "package_name": "com.example.my_games_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016139102406-v97jeg9c71foi2e38dgacc50q4bruglm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO590w3ITQAkC1UoYv45b0dBWv3eI2zUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016139102406-v97jeg9c71foi2e38dgacc50q4bruglm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -21,8 +21,9 @@ class _SteamLoginState extends State<SteamLogin> {
         //print("src: " + openId.host.toString() + " dest: " + openId.returnUrl.toString());
         await _webView.close();
         steamID = await openId.validate();
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage(steamID)));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => HomePage(steamID),
+        ));
       }
     });
 
@@ -33,7 +34,7 @@ class _SteamLoginState extends State<SteamLogin> {
     return WebviewScaffold(
       url: openId.authUrl().toString(),
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).indicatorColor,
         title: const Text("Steam Login"),
       ),
     );

@@ -101,9 +101,9 @@ Widget displayGameInfo(GameModel game) => Column(
       ],
     );
 
-Widget displayLoadingSpinner() => Column(
-      children: const [
-        SizedBox(
+Widget displayLoadingSpinner(BuildContext context) => Column(
+      children: [
+        const SizedBox(
           height: 200,
         ),
         Align(
@@ -112,7 +112,7 @@ Widget displayLoadingSpinner() => Column(
             height: 50,
             width: 50,
             child: CircularProgressIndicator(
-              color: Colors.blue,
+              color: Theme.of(context).indicatorColor,
             ),
           ),
         ),

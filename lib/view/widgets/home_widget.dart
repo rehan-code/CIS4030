@@ -1,5 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
+
+import '../../core/game_data.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
@@ -11,11 +16,27 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
+  List<GameModel> allGames =
+      game_data.map((game) => GameModel.fromJSON(game)).toList();
+
+  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 4, vsync: this);
+    _timer = Timer.periodic(
+        const Duration(seconds: 1),
+        (_) => setState(() {
+              allGames =
+                  game_data.map((game) => GameModel.fromJSON(game)).toList();
+            }));
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   @override
@@ -23,12 +44,12 @@ class _HomeWidgetState extends State<HomeWidget>
     return Column(
       children: [
         Container(
-          color: Colors.deepPurple,
+          // color: Theme.of(context).primaryColor,
           child: TabBar(
             // isScrollable: true,
             // labelPadding: const EdgeInsets.only(top: 25),
-            labelColor: Colors.white,
-            indicatorColor: Colors.white,
+            // labelColor: Theme.of(context).primaryColor,
+            // indicatorColor: Theme.of(context).tabBarTheme.labelColor,
             indicatorWeight: 5,
             controller: _controller,
             tabs: const [
@@ -67,30 +88,22 @@ class _HomeWidgetState extends State<HomeWidget>
           child: Container(
             height: 100,
             child: TabBarView(controller: _controller, children: [
-              GameList(),
-              GameList(),
-              GameList(),
-              GameList(),
-              // Center(
-              //     child: Text(
-              //   "ALL",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "PLAYING",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "COMPLETED",
-              //   style: TextStyle(fontSize: 12),
-              // )),
-              // Center(
-              //     child: Text(
-              //   "PLAN TO PLAY",
-              //   style: TextStyle(fontSize: 12),
-              // )),
+              GameList(
+                  games: game_data
+                      .map((game) => GameModel.fromJSON(game))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('playing'))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('complete'))
+                      .toList()),
+              GameList(
+                  games: allGames
+                      .where((game) => game.category.contains('planned'))
+                      .toList()),
             ]),
           ),
         ),
