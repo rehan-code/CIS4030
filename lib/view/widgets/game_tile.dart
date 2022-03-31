@@ -22,13 +22,14 @@ class GameTile extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 // padding: EdgeInsets.all(8),
-                width: 70,
-                height: 70,
+                width: 45,
+                height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
                     image: NetworkImage(game.img_icon_url),
-                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.high,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),
