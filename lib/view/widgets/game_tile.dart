@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/services/steamAPI.dart';
 import 'game_options.dart';
 import 'game_details.dart';
 
@@ -14,7 +15,12 @@ class GameTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(1.0),
       child: GestureDetector(
-        onTap: () => showSteamAppBottomSheet(context, game, isExplore),
+        onTap: () async {
+          GameModel updatedGame =
+              await SteamAPI.getAppDetails(game.appid, game);
+
+          showSteamAppBottomSheet(context, updatedGame, isExplore);
+        },
         child: Card(
             child: Row(
           children: [

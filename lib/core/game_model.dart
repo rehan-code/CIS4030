@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'package:html/parser.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class GameModel {
   String _category = "";
@@ -23,8 +24,8 @@ class GameModel {
   List<String> get publishers => _publishers;
   List<String> _genres = [];
   List<String> get genres => _genres;
-  String _reviews = "";
-  String get reviews => _reviews;
+  String _rating = "";
+  String get rating => _rating;
   bool _windows = false;
   bool get windows => _windows;
   bool _mac = false;
@@ -32,18 +33,15 @@ class GameModel {
   bool _linux = false;
   bool get linux => _linux;
 
-  String sanitizeHTML(String dirtyString) {
+  static String sanitizeHTML(String dirtyString) {
     print("Dirty:");
     print(dirtyString);
-    var htmlDoc = parse(dirtyString);
-    if (htmlDoc.documentElement != null) {
-      String cleanString = htmlDoc.documentElement!.text;
-      print("clean: ");
-      print(cleanString);
-      return cleanString;
-    }
 
-    return "";
+    final document = parse(dirtyString);
+    final String parsedString =
+        parse(document.body!.text).documentElement!.text;
+
+    return parsedString;
   }
 
   GameModel(
@@ -57,7 +55,7 @@ class GameModel {
       this._detailed_description,
       this._publishers,
       this._genres,
-      this._reviews,
+      this._rating,
       this._windows,
       this._mac,
       this._linux);
@@ -89,7 +87,7 @@ class GameModel {
     final String detailed_description = data["detailed_description"] as String;
     final List<String> publishers = data["publisher"] as List<String>;
     final List<String> genres = data["genres"] as List<String>;
-    final String reviews = data["reviews"] as String;
+    final String rating = data["rating"] as String;
     final bool windows = data["windows"] as bool;
     final bool mac = data["mac"] as bool;
     final bool linux = data["linux"] as bool;
@@ -104,14 +102,15 @@ class GameModel {
         detailed_description,
         publishers,
         genres,
-        reviews,
+        rating,
         windows,
         mac,
         linux);
   }
 
-  factory GameModel.fromSteamDetailsAPI(Map<String, dynamic> data) {
-    final String appid = data['steam_appid'] as String;
+  factory GameModel.fromSteamDetailsAPI(
+      Map<String, dynamic> data, GameModel existingGame) {
+    final String appid = (data['steam_appid'] as int).toString();
     final String name = data['name'] as String;
     final String price_overview = data['price_overview'] != null
         ? (data['price_overview']['final_formatted']) as String
@@ -120,14 +119,36 @@ class GameModel {
         ? "https://w7.pngwing.com/pngs/958/304/png-transparent-red-x-illustration-x-mark-check-mark-symbol-x-mark-miscellaneous-angle-hand.png"
         : data['header_image'] as String;
     final String detailed_description = data['detailed_description'] as String;
-    final List<String> publishers = data['publishers'] as List<String>;
-    final List<String> genres = data['genres'] as List<String>;
-    final String reviews = data['reviews'] as String;
+    print("Parsing publishers:");
+    final List<String> publishers = [];
+    for (var publisher in data['publishers'] as List<dynamic>) {
+      publishers.add(publisher as String);
+    }
+
+    print("Parsing genres:");
+    final List<String> genres = [];
+    for (var genre in data['genres'] as List<dynamic>) {
+      genres.add(genre["description"]);
+    }
+    final String rating = (data['review_score'] as int).toString();
     final bool windows = data['platforms']['windows'] as bool;
     final bool mac = data['platforms']['mac'] as bool;
     final bool linux = data['platforms']['linux'] as bool;
-    return GameModel("none", appid, name, "", price_overview, "", header_image,
-        detailed_description, publishers, genres, reviews, windows, mac, linux);
+    return GameModel(
+        existingGame._category,
+        appid,
+        name,
+        existingGame.playtime_forever,
+        price_overview,
+        existingGame.img_icon_url,
+        header_image,
+        detailed_description,
+        publishers,
+        genres,
+        rating,
+        windows,
+        mac,
+        linux);
   }
 
   Map<String, dynamic> toJSON() {
@@ -141,7 +162,7 @@ class GameModel {
       "detailed_description": _detailed_description,
       "publishers": _publishers,
       "genres": _genres,
-      "reviews": _reviews,
+      "rating": _rating,
       "windows": _windows,
       "mac": _mac,
       "linux": _linux,

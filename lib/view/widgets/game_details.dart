@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_options.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future showSteamAppBottomSheet(var context, GameModel game, bool isExplore) {
   return showModalBottomSheet(
@@ -52,7 +54,9 @@ class _GameInfoState extends State<GameInfo> {
   //     imageUrl = "url";
   //     description =
   //         "Game description Game descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame description";
-  //   });
+  //
+
+  void _launchURL(url) async {}
   // }
 
   @override
@@ -94,10 +98,21 @@ Widget displayGameInfo(GameModel game) => Column(
         const SizedBox(
           height: 20,
         ),
-        Text(
+
+        HtmlWidget(
           game.detailed_description,
-          style: const TextStyle(fontSize: 18),
+          onTapUrl: (url) async {
+            try {
+              return await launch(url);
+            } catch (e) {
+              throw 'Could not launch $url';
+            }
+          },
         ),
+        // Text(
+        //   game.detailed_description,
+        //   style: const TextStyle(fontSize: 18),
+        // ),
       ],
     );
 

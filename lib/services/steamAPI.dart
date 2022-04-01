@@ -37,4 +37,28 @@ class SteamAPI {
       return [];
     }
   }
+
+  static Future<GameModel> getAppDetails(
+      String appID, GameModel existingGame) async {
+    String url =
+        "https://store.steampowered.com/api/appdetails?appids=" + appID;
+    String ratingURL =
+        "https://store.steampowered.com/appreviews/" + appID + "?json=1";
+
+    print(url);
+    try {
+      http.Response response = await http.get(Uri.parse(url));
+      final Map<String, dynamic> parsedResponse = jsonDecode(response.body);
+      http.Response ratingResponse = await http.get(Uri.parse(ratingURL));
+      final Map<String, dynamic> parsedRatingResponse =
+          jsonDecode(ratingResponse.body);
+      Map<String, dynamic> data = parsedResponse[appID]["data"];
+      data.addAll(parsedRatingResponse["query_summary"]);
+      print("All details data: " + data.toString());
+      return GameModel.fromSteamDetailsAPI(data, existingGame);
+    } catch (e) {
+      print(e);
+      return null as GameModel;
+    }
+  }
 }
