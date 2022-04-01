@@ -26,7 +26,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final Future<FirebaseApp> _myGamesTrackerDB = Firebase.initializeApp();
+  Map<String, dynamic> testData = {};
   ThemeProvider themeProvider;
+
   MyApp(this.themeProvider);
 
   @override
@@ -40,9 +43,24 @@ class MyApp extends StatelessWidget {
           themeMode: themeProvider.themeMode,
           theme: MyThemes.lightTheme,
           darkTheme: MyThemes.darkTheme,
-          home: Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: LoginScreen(themeProvider),
+          home: FutureBuilder(
+            future: _myGamesTrackerDB,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                print("Firebase Error: ${snapshot.error.toString()}");
+                return Text("Couldn't load Firebase Database!");
+              } else if (snapshot.hasData) {
+                print("FIREBASE INTIALIZED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                return Scaffold(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  body: LoginScreen(themeProvider),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
         );
       },

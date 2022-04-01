@@ -46,6 +46,10 @@ dependencies:
 dev_dependencies:
   flutter_webview_plugin: ^0.4.0
   permission_handler: ^9.2.0
+  firebase_core: ^1.13.1
+  #firebase_auth: ^0.14.0+5
+  cloud_firestore: ^3.1.10
+
   flutter_test:
     sdk: flutter
 
