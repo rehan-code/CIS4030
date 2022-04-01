@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                 FontWeight.normal, 25.0);
           } else {
             print("User Library: " + (s.data!).toString());
-            FireStore.updateAllUserGames(widget.steamID, s.data!);
+            FireStore.updateAllUserGames(s.data!);
             return HomeWidget(allGames: s.data!);
           }
         },
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
             endDrawer:
                 //  SettingsDrawer(FireStore.getPlayerSummary(widget.steamID), themeProvider)
                 FutureBuilder<PlayerSummary>(
-              future: FireStore.getPlayerSummary(widget.steamID),
+              future: FireStore.getPlayerSummary(),
               builder: (BuildContext context, AsyncSnapshot<PlayerSummary> s) {
                 if (!s.hasData) {
                   return Center(

@@ -12,6 +12,8 @@ class GameModel {
   String get name => _name;
   String _playtime_forever = "";
   String get playtime_forever => _playtime_forever;
+  String _playtime_2weeks = "";
+  String get playtime_2weeks => _playtime_forever;
   String _price_overview = "";
   String get price_overview => _price_overview;
   String _img_icon_url = "";
@@ -49,6 +51,7 @@ class GameModel {
       this._appid,
       this._name,
       this._playtime_forever,
+      this._playtime_2weeks,
       this._price_overview,
       this._img_icon_url,
       this._header_image,
@@ -64,16 +67,19 @@ class GameModel {
     final String appid = (data['appid'] as int).toString();
     final String name = data['name'] as String;
     final String playtime_forever = data['playtime_forever'] != null
-        ? ((data['playtime_forever'] as int) / 60).toStringAsFixed(1) + " hours"
-        : "";
+        ? ((data['playtime_forever'] as int) / 60).toStringAsFixed(1)
+        : "0.00";
+    final String playtime_2weeks = data['playtime_2weeks'] != null
+        ? ((data['playtime_2weeks'] as int) / 60).toStringAsFixed(1)
+        : "0.00";
     final String img_icon_url = (data['img_icon_url'] as String).isEmpty
         ? "https://w7.pngwing.com/pngs/958/304/png-transparent-red-x-illustration-x-mark-check-mark-symbol-x-mark-miscellaneous-angle-hand.png"
         : "http://media.steampowered.com/steamcommunity/public/images/apps/${appid}/" +
             (data['img_icon_url'] as String) +
             ".jpg";
 
-    return GameModel("none", appid, name, playtime_forever, "", img_icon_url,
-        "", "", [], [], "", false, false, false);
+    return GameModel("none", appid, name, playtime_forever, playtime_2weeks, "",
+        img_icon_url, "", "", [], [], "", false, false, false);
   }
 
   factory GameModel.fromFirebase(Map<String, dynamic> data) {
@@ -81,12 +87,21 @@ class GameModel {
     final String appid = data['appid'] as String;
     final String name = data["name"] as String;
     final String playtime_forever = data["playtime_forever"] as String;
+    final String playtime_2weeks = data["playtime_2weeks"] as String;
     final String price_overview = data["price_overview"] as String;
     final String img_icon_url = data["img_icon_url"] as String;
     final String header_image = data["header_image"] as String;
     final String detailed_description = data["detailed_description"] as String;
-    final List<String> publishers = data["publisher"] as List<String>;
-    final List<String> genres = data["genres"] as List<String>;
+    final List<String> publishers = data["publisher"] != null
+        ? (data["publisher"] as List<dynamic>).isNotEmpty
+            ? data["publisher"] as List<String>
+            : []
+        : [];
+    final List<String> genres = data["genres"] != null
+        ? (data["genres"] as List<dynamic>).isNotEmpty
+            ? data["genres"] as List<String>
+            : []
+        : [];
     final String rating = data["rating"] as String;
     final bool windows = data["windows"] as bool;
     final bool mac = data["mac"] as bool;
@@ -96,6 +111,7 @@ class GameModel {
         appid,
         name,
         playtime_forever,
+        playtime_2weeks,
         price_overview,
         img_icon_url,
         header_image,
@@ -139,6 +155,7 @@ class GameModel {
         appid,
         name,
         existingGame.playtime_forever,
+        existingGame.playtime_2weeks,
         price_overview,
         existingGame.img_icon_url,
         header_image,
@@ -156,6 +173,7 @@ class GameModel {
       "appid": _appid,
       "name": _name,
       "playtime_forever": _playtime_forever,
+      "playtime_2weeks": _playtime_2weeks,
       "price_overview": _price_overview,
       "img_icon_url": _img_icon_url,
       "header_image": _header_image,

@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
 
 import '../../core/game_data.dart';
+import '../../services/firestore.dart';
 
 class HomeWidget extends StatefulWidget {
   final List<GameModel> allGames;
@@ -17,28 +19,11 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  List<GameModel> allGames =
-      game_data.map((game) => GameModel.fromSteamLibraryAPI(game)).toList();
-
-  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
     _controller = TabController(length: 5, vsync: this);
-    _timer = Timer.periodic(
-        const Duration(seconds: 1),
-        (_) => setState(() {
-              allGames = game_data
-                  .map((game) => GameModel.fromSteamLibraryAPI(game))
-                  .toList();
-            }));
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 
   @override
@@ -87,7 +72,7 @@ class _HomeWidgetState extends State<HomeWidget>
               child: SizedBox(
                 width: 65,
                 child: Text(
-                  "WISHLIST",
+                  "PLAN TO PLAY",
                   style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
@@ -113,38 +98,78 @@ class _HomeWidgetState extends State<HomeWidget>
                 games: widget.allGames,
                 isExplore: false,
               ),
-              GameList(
-                games: game_data
-                    .map((game) => GameModel.fromSteamLibraryAPI(game))
-                    .toList(),
-                isExplore: false,
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("playingGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
               ),
               // games: allGames
               //     .where((game) => game.category.contains('playing'))
               //     .toList()),
-              GameList(
-                games: game_data
-                    .map((game) => GameModel.fromSteamLibraryAPI(game))
-                    .toList(),
-                isExplore: false,
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("completeGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
               ),
               // games: allGames
               //     .where((game) => game.category.contains('complete'))
               //     .toList()),
-              GameList(
-                games: game_data
-                    .map((game) => GameModel.fromSteamLibraryAPI(game))
-                    .toList(),
-                isExplore: false,
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("plannedGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
               ),
               // games: allGames
               //     .where((game) => game.category.contains('planned'))
               //     .toList()),
-              GameList(
-                games: game_data
-                    .map((game) => GameModel.fromSteamLibraryAPI(game))
-                    .toList(),
-                isExplore: false,
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("unplayedGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
               ),
             ]),
           ),

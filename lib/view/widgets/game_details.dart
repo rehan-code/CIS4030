@@ -53,12 +53,19 @@ class _GameInfoState extends State<GameInfo> {
   //     title = "Game Title";
   //     imageUrl = "url";
   //     description =
-  //         "Game description Game descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame descriptionGame description";
-  //
-
-  void _launchURL(url) async {}
+  //   return DraggableScrollableSheet(
+  //     expand: false,
+  //     maxChildSize: 0.9,
+  //     minChildSize: 0.6,
+  //     initialChildSize: 0.7,
+  //     builder: (_, controller) => Container(
+  //       padding: const EdgeInsets.all(16.0),
+  //       child: ListView(controller: controller, children: [
+  //         displayGameInfo(widget.gameModel),
+  //       ]),
+  //     ),
+  //   );
   // }
-
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -69,15 +76,16 @@ class _GameInfoState extends State<GameInfo> {
       builder: (_, controller) => Container(
         padding: const EdgeInsets.all(16.0),
         child: ListView(controller: controller, children: [
-          displayGameInfo(widget.gameModel),
+          displayGameInfo(widget.gameModel, widget.isExplore),
         ]),
       ),
     );
   }
 }
 
-Widget displayGameInfo(GameModel game) => Column(
+Widget displayGameInfo(GameModel game, bool isExplore) => Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,6 +103,37 @@ Widget displayGameInfo(GameModel game) => Column(
           height: 10,
         ),
         Image.network(game.header_image),
+        const SizedBox(
+          height: 20,
+        ),
+
+        Text(
+          isExplore
+              ? "Price: " + game.price_overview
+              : "Play Time: " + game.playtime_forever + " hours",
+        ),
+        Text("Score: " + game.rating + "/10"),
+        Wrap(
+          children: [
+            const Text(
+              "Publishers: ",
+            ),
+            for (int i = 0; i < game.publishers.length; i++)
+              Text(game.publishers[i] +
+                  (i == game.publishers.length - 1 ? "" : ", ")),
+          ],
+        ),
+
+        Wrap(
+          children: [
+            const Text(
+              "Genres: ",
+            ),
+            for (int i = 0; i < game.genres.length; i++)
+              Text(game.genres[i] + (i == game.genres.length - 1 ? "" : ", "))
+          ],
+        ),
+
         const SizedBox(
           height: 20,
         ),

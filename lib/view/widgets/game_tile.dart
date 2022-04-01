@@ -56,8 +56,8 @@ class GameTile extends StatelessWidget {
                           )),
                       Text(
                           isExplore
-                              ? "Price ${game.price_overview}"
-                              : "Play Time: ${game.playtime_forever}",
+                              ? "Price: ${game.price_overview}"
+                              : "Play Time: ${game.playtime_forever} hours",
                           style: TextStyle(
                             fontSize: 16,
                           )),

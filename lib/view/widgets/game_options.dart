@@ -12,43 +12,56 @@ class GameOptions extends StatefulWidget {
 }
 
 class _GameOptionsState extends State<GameOptions> {
+  String _currCategory = "";
+
+  void setCurrCategory() async {
+    _currCategory = await FireStore.getCategory(widget.game.appid);
+  }
+
   @override
   Widget build(BuildContext context) {
+    setCurrCategory();
     return PopupMenuButton<String>(
       onSelected: (String result) {
-        FireStore.updateCategory(
-            widget.game.appid, widget.game.category, result);
+        FireStore.updateCategory(widget.game.appid, _currCategory, result);
         setState(() {
-          widget.game.category = result;
+          _currCategory = result;
         });
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
-          value: 'none',
+          value: 'allGames',
           child: MenuTile(
-            title: 'None',
-            selected: (widget.game.category == "none"),
+            title: 'All',
+            selected: (_currCategory == "allGames"),
           ),
         ),
         PopupMenuItem<String>(
-          value: 'playing',
+          value: 'playingGames',
           child: MenuTile(
             title: 'Playing',
-            selected: (widget.game.category == "playing"),
+            selected: (_currCategory == "playingGames"),
           ),
         ),
         PopupMenuItem<String>(
-          value: 'complete',
+          value: 'completeGames',
           child: MenuTile(
             title: 'Complete',
-            selected: (widget.game.category == "complete"),
+            selected: (_currCategory == "completeGames"),
           ),
         ),
         PopupMenuItem<String>(
-          value: 'planned',
+          value: 'plannedGames',
           child: MenuTile(
-            title: 'Plan To Play',
-            selected: (widget.game.category == "planned"),
+            title: 'Plan to Play',
+            selected: (_currCategory == "plannedGames"),
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'unplayedGames',
+          child: MenuTile(
+            title: 'Unplayed',
+            selected: (_currCategory == "unplayedGames"),
           ),
         ),
       ],
