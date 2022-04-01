@@ -18,7 +18,10 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-  } catch (e) {}
+  } catch (e) {
+    print("An exception occurred when trying to establish the DB connection.");
+    print("Error: " + e.toString());
+  }
   runApp(MyApp(themeProvider));
 }
 

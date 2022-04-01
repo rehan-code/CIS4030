@@ -14,11 +14,23 @@ class GameList extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          for (var game in games)
-            GameTile(
-              game: game,
-              isExplore: isExplore,
-            ),
+          if (games.isEmpty)
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: Text("No Games to display yet...",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic)),
+              ),
+            )
+          else
+            for (var game in games)
+              GameTile(
+                game: game,
+                isExplore: isExplore,
+              ),
         ],
       ),
     );
