@@ -20,15 +20,4 @@ class GameModel {
 
     return GameModel(title, image, description, playtime, rating, category);
   }
-
-  void printGameModel() {
-    print("<-------------------------------------------------->");
-    print("title: " + title);
-    print("image: " + image);
-    print("description: " + description);
-    print("playTime: " + playtime.toString());
-    print("rating: " + rating.toString());
-    print("category: " + category);
-    print("<-------------------------------------------------->");
-  }
 }
