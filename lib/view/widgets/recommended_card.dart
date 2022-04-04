@@ -14,7 +14,7 @@ class RecommendedCard extends StatelessWidget {
       child: GestureDetector(
         // Danial add details widget to onTap here:
         onTap: () {
-          showSteamAppBottomSheet(context, game, true);
+          showSteamAppBottomSheet(context, game);
         },
         child: Card(
           child: Stack(
@@ -22,7 +22,7 @@ class RecommendedCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
                 child: Image.network(
-                  game.header_image,
+                  game.image,
                   height: 200,
                   width: 250,
                   fit: BoxFit.cover,
@@ -46,7 +46,7 @@ class RecommendedCard extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Text(
-                        game.name,
+                        game.title,
                         style: TextStyle(
                           // color: Colors.white,
                           // color: Theme.of(context).secondaryHeaderColor,

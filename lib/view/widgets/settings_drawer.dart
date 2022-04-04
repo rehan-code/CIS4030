@@ -3,14 +3,14 @@ import 'package:my_games_tracker/main.dart';
 import 'package:my_games_tracker/view/pages/login_page.dart';
 import 'package:my_games_tracker/view/widgets/theme_provider.dart';
 
-import '../../core/player_summary.dart';
 import 'settings.dart';
 
 class SettingsDrawer extends StatelessWidget {
-  final PlayerSummary playerSummary;
+  final String accountName;
+  final String imageURL;
   ThemeProvider themeProvider;
 
-  SettingsDrawer(this.playerSummary, this.themeProvider);
+  SettingsDrawer(this.accountName, this.imageURL, this.themeProvider);
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +23,18 @@ class SettingsDrawer extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                (playerSummary.avatarfull == "")
+                (imageURL == "")
                     ? Icon(Icons.account_circle,
                         size: 80) // color: Theme.of(context).primaryColor
                     : CircleAvatar(
-                        backgroundImage: NetworkImage(playerSummary.avatarfull),
+                        backgroundImage: NetworkImage(imageURL),
                         radius: 50,
                       ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
                   child: Center(
                       child: Text(
-                    (playerSummary.personaname == "")
-                        ? "User Name"
-                        : playerSummary.personaname,
+                    (accountName == "") ? "User Name" : accountName,
                     style: TextStyle(
                       // color: Colors.white,
                       // color: Theme.of(context).primaryColor,
