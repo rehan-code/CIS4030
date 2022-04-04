@@ -36,6 +36,12 @@ dependencies:
   cupertino_icons: ^1.0.2
   steam_login: ^1.1.0
   provider: ^6.0.2
+  firebase_core: ^1.13.1
+  cloud_firestore: ^3.1.10
+  firebase_auth: ^3.3.11
+  html: ^0.15.0
+  flutter_widget_from_html: ^0.8.5
+  url_launcher: ^6.0.20
 
 dev_dependencies:
   flutter_webview_plugin: ^0.4.0

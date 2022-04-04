@@ -1,13 +1,16 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
 
 import '../../core/game_data.dart';
+import '../../services/firestore.dart';
 
 class HomeWidget extends StatefulWidget {
-  const HomeWidget({Key? key}) : super(key: key);
+  final List<GameModel> allGames;
+  const HomeWidget({Key? key, required this.allGames}) : super(key: key);
 
   @override
   State<HomeWidget> createState() => _HomeWidgetState();
@@ -16,94 +19,158 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  List<GameModel> allGames =
-      game_data.map((game) => GameModel.fromJSON(game)).toList();
-
-  late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    _controller = TabController(length: 4, vsync: this);
-    _timer = Timer.periodic(
-        const Duration(seconds: 1),
-        (_) => setState(() {
-              allGames =
-                  game_data.map((game) => GameModel.fromJSON(game)).toList();
-            }));
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
+    _controller = TabController(length: 5, vsync: this);
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          // color: Theme.of(context).primaryColor,
-          child: TabBar(
-            // isScrollable: true,
-            // labelPadding: const EdgeInsets.only(top: 25),
-            // labelColor: Theme.of(context).primaryColor,
-            // indicatorColor: Theme.of(context).tabBarTheme.labelColor,
-            indicatorWeight: 5,
-            controller: _controller,
-            tabs: const [
-              Tab(
+        TabBar(
+          isScrollable: true,
+          // labelPadding: const EdgeInsets.only(top: 25),
+          // labelColor: Theme.of(context).primaryColor,
+          // indicatorColor: Theme.of(context).tabBarTheme.labelColor,
+          indicatorWeight: 5,
+          controller: _controller,
+          tabs: const [
+            Tab(
+              child: SizedBox(
+                width: 65,
                 child: Text(
                   "All",
                   style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               ),
-              Tab(
+            ),
+            Tab(
+              child: SizedBox(
+                width: 65,
                 child: Text(
                   "PLAYING",
                   style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               ),
-              Tab(
+            ),
+            Tab(
+              child: SizedBox(
+                width: 65,
                 child: Text(
                   "COMPLETE",
                   style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               ),
-              Tab(
+            ),
+            Tab(
+              child: SizedBox(
+                width: 65,
                 child: Text(
                   "PLAN TO PLAY",
                   style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               ),
-            ],
-          ),
+            ),
+            Tab(
+              child: SizedBox(
+                width: 65,
+                child: Text(
+                  "UNPLAYED",
+                  style: TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
         ),
         Expanded(
           child: Container(
             height: 100,
             child: TabBarView(controller: _controller, children: [
               GameList(
-                  games: game_data
-                      .map((game) => GameModel.fromJSON(game))
-                      .toList()),
-              GameList(
-                  games: allGames
-                      .where((game) => game.category.contains('playing'))
-                      .toList()),
-              GameList(
-                  games: allGames
-                      .where((game) => game.category.contains('complete'))
-                      .toList()),
-              GameList(
-                  games: allGames
-                      .where((game) => game.category.contains('planned'))
-                      .toList()),
+                games: widget.allGames,
+                isExplore: false,
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("playingGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
+              ),
+              // games: allGames
+              //     .where((game) => game.category.contains('playing'))
+              //     .toList()),
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("completeGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
+              ),
+              // games: allGames
+              //     .where((game) => game.category.contains('complete'))
+              //     .toList()),
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("plannedGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
+              ),
+              // games: allGames
+              //     .where((game) => game.category.contains('planned'))
+              //     .toList()),
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("unplayedGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> playingGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: playingGames,
+                    isExplore: false,
+                  );
+                },
+              ),
             ]),
           ),
         ),

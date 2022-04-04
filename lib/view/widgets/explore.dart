@@ -36,7 +36,11 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
                 "Recommended:",
                 style: TextStyle(fontSize: 18),
               ),
-              IconButton(onPressed: () {showSearch(context: context, delegate: SearchBar());}, icon: Icon(Icons.search)),
+              IconButton(
+                  onPressed: () {
+                    showSearch(context: context, delegate: SearchBar());
+                  },
+                  icon: Icon(Icons.search)),
             ],
           ),
         ),
@@ -46,7 +50,7 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             scrollDirection: Axis.horizontal,
             children: [
               for (var game in game_data)
-                RecommendedCard(game: GameModel.fromJSON(game))
+                RecommendedCard(game: GameModel.fromSteamLibraryAPI(game))
             ],
           ),
         ),
@@ -57,9 +61,21 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             // indicatorColor: Colors.white,
             controller: _controller,
             tabs: [
-              Tab(child: Text("New & Trending", textAlign: TextAlign.center,)),
-              Tab(child: Text("Top Sellers",  textAlign: TextAlign.center,)),
-              Tab(child: Text("Whats Being Experienced", textAlign: TextAlign.center,)),
+              Tab(
+                  child: Text(
+                "New & Trending",
+                textAlign: TextAlign.center,
+              )),
+              Tab(
+                  child: Text(
+                "Top Sellers",
+                textAlign: TextAlign.center,
+              )),
+              Tab(
+                  child: Text(
+                "Whats Being Experienced",
+                textAlign: TextAlign.center,
+              )),
             ],
           ),
         ),
@@ -68,9 +84,24 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             child: TabBarView(
               controller: _controller,
               children: [
-                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
-                GameList(games: game_data.map((game) => GameModel.fromJSON(game)).toList()),
+                GameList(
+                  games: game_data
+                      .map((game) => GameModel.fromSteamLibraryAPI(game))
+                      .toList(),
+                  isExplore: true,
+                ),
+                GameList(
+                  games: game_data
+                      .map((game) => GameModel.fromSteamLibraryAPI(game))
+                      .toList(),
+                  isExplore: true,
+                ),
+                GameList(
+                  games: game_data
+                      .map((game) => GameModel.fromSteamLibraryAPI(game))
+                      .toList(),
+                  isExplore: true,
+                ),
               ],
             ),
           ),

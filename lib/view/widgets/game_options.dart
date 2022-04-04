@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/services/firestore.dart';
 
 class GameOptions extends StatefulWidget {
   final GameModel game;
@@ -11,42 +12,57 @@ class GameOptions extends StatefulWidget {
 }
 
 class _GameOptionsState extends State<GameOptions> {
+  String _currCategory = "";
+
+  void setCurrCategory() async {
+    _currCategory = await FireStore.getCategory(widget.game.appid);
+  }
+
   @override
   Widget build(BuildContext context) {
+    setCurrCategory();
     return PopupMenuButton<String>(
       onSelected: (String result) {
+        FireStore.updateCategory(widget.game.appid, _currCategory, result);
         setState(() {
-          widget.game.category = result;
+          _currCategory = result;
         });
-        for (var game in game_data) {
-          if (game['title'] as String == widget.game.title) {
-            game['category'] = result;
-            break;
-          }
-        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
-          value: 'none',
+          value: 'allGames',
           child: MenuTile(
-              title: 'None', selected: (widget.game.category == "none")),
+            title: 'All',
+            selected: (_currCategory == "allGames"),
+          ),
         ),
         PopupMenuItem<String>(
-          value: 'playing',
+          value: 'playingGames',
           child: MenuTile(
-              title: 'Playing', selected: (widget.game.category == "playing")),
+            title: 'Playing',
+            selected: (_currCategory == "playingGames"),
+          ),
         ),
         PopupMenuItem<String>(
-          value: 'complete',
+          value: 'completeGames',
           child: MenuTile(
-              title: 'Complete',
-              selected: (widget.game.category == "complete")),
+            title: 'Complete',
+            selected: (_currCategory == "completeGames"),
+          ),
         ),
         PopupMenuItem<String>(
-          value: 'planned',
+          value: 'plannedGames',
           child: MenuTile(
-              title: 'Plan To Play',
-              selected: (widget.game.category == "planned")),
+            title: 'Plan to Play',
+            selected: (_currCategory == "plannedGames"),
+          ),
+        ),
+        PopupMenuItem<String>(
+          value: 'unplayedGames',
+          child: MenuTile(
+            title: 'Unplayed',
+            selected: (_currCategory == "unplayedGames"),
+          ),
         ),
       ],
     );
