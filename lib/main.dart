@@ -9,10 +9,6 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   ThemeProvider themeProvider = ThemeProvider();
-  // WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 
+import '../../services/steamAPI.dart';
 import 'game_details.dart';
 
 class RecommendedCard extends StatelessWidget {
@@ -13,8 +14,11 @@ class RecommendedCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         // Danial add details widget to onTap here:
-        onTap: () {
-          showSteamAppBottomSheet(context, game, true);
+        onTap: () async {
+          GameModel updatedGame =
+              await SteamAPI.getAppDetails(game.appid, game);
+
+          showSteamAppBottomSheet(context, updatedGame, true);
         },
         child: Card(
           child: Stack(

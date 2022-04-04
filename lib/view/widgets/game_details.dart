@@ -32,40 +32,6 @@ class GameInfo extends StatefulWidget {
 }
 
 class _GameInfoState extends State<GameInfo> {
-  // bool isLoading = true;
-  // String title = "";
-  // String imageUrl = "";
-  // String description = "";
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance?.addPostFrameCallback((_) => getGameInfo(context));
-  // }
-
-  // void getGameInfo(BuildContext context) async {
-  //   setState(() {
-  //     isLoading = true;
-  //   });
-  //   await Future.delayed(const Duration(seconds: 1));
-  //   setState(() {
-  //     isLoading = false;
-  //     title = "Game Title";
-  //     imageUrl = "url";
-  //     description =
-  //   return DraggableScrollableSheet(
-  //     expand: false,
-  //     maxChildSize: 0.9,
-  //     minChildSize: 0.6,
-  //     initialChildSize: 0.7,
-  //     builder: (_, controller) => Container(
-  //       padding: const EdgeInsets.all(16.0),
-  //       child: ListView(controller: controller, children: [
-  //         displayGameInfo(widget.gameModel),
-  //       ]),
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -76,7 +42,9 @@ class _GameInfoState extends State<GameInfo> {
       builder: (_, controller) => Container(
         padding: const EdgeInsets.all(16.0),
         child: ListView(controller: controller, children: [
-          displayGameInfo(widget.gameModel, widget.isExplore),
+          widget.gameModel.appid.isEmpty
+              ? Text("Not game")
+              : displayGameInfo(widget.gameModel, widget.isExplore),
         ]),
       ),
     );

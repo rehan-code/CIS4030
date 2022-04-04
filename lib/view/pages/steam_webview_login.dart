@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:my_games_tracker/services/firestore.dart';
+import 'package:my_games_tracker/view/pages/login_page.dart';
+import 'package:my_games_tracker/view/widgets/theme_provider.dart';
 import 'package:steam_login/steam_login.dart';
 import '../../core/game_data.dart';
 import '../../core/game_model.dart';
 import '../../services/firestore.dart';
 
+import '../../services/steamAPI.dart';
 import 'home_page.dart';
 
 class SteamLogin extends StatefulWidget {
@@ -15,6 +18,7 @@ class SteamLogin extends StatefulWidget {
 
 class _SteamLoginState extends State<SteamLogin> {
   final _webView = FlutterWebviewPlugin();
+  ThemeProvider themeProvider = ThemeProvider();
   String steamID = "";
 
   @override
@@ -26,15 +30,22 @@ class _SteamLoginState extends State<SteamLogin> {
         await _webView.close();
         steamID = await openId.validate();
         if (steamID != "") {
-          List<GameModel> allGames = game_data
-              .map((game) => GameModel.fromSteamLibraryAPI(game))
-              .toList();
+          List<GameModel> allGames = await SteamAPI.getPlayerLibrary(steamID);
+          Map<String, List<GameModel>> explorePageData =
+              await SteamAPI.getExplorePageData();
           await FireStore.addSteamID(steamID);
-          // await FireStore.updateAllUserGames(steamID, allGames);
+          await FireStore.updateAllUserGames(allGames);
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => HomePage(
+                steamID: steamID,
+                allGames: allGames,
+                explorePageData: explorePageData),
+          ));
+        } else {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => LoginScreen(themeProvider),
+          ));
         }
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => HomePage(steamID: steamID),
-        ));
       }
     });
 

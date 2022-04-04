@@ -38,6 +38,60 @@ class SteamAPI {
     }
   }
 
+  static Future<Map<String, List<GameModel>>> getExplorePageData() async {
+    Map<String, String> requestHeaders = {
+      'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36',
+      'sec-ch-ua-platform': "Windows",
+    };
+    String url = "http://store.steampowered.com/api/featuredcategories/";
+    print(url);
+    try {
+      http.Response response =
+          await http.get(Uri.parse(url), headers: requestHeaders);
+      final Map<String, dynamic> parsedResponse = jsonDecode(response.body);
+
+      List<dynamic> specialsResponse =
+          parsedResponse['specials']['items'] as List<dynamic>;
+      List<GameModel> specials = [];
+      for (int i = 0; i < specialsResponse.length; i++) {
+        specials.add(GameModel.fromSteamFeatureAPI(
+            specialsResponse[i] as Map<String, dynamic>));
+      }
+      List<dynamic> comingSoonResponse =
+          parsedResponse['coming_soon']['items'] as List<dynamic>;
+      List<GameModel> comingSoon = [];
+      for (int i = 0; i < comingSoonResponse.length; i++) {
+        comingSoon.add(GameModel.fromSteamFeatureAPI(
+            comingSoonResponse[i] as Map<String, dynamic>));
+      }
+      List<dynamic> topSellersResponse =
+          parsedResponse['top_sellers']['items'] as List<dynamic>;
+      List<GameModel> topSellers = [];
+      for (int i = 0; i < topSellersResponse.length; i++) {
+        topSellers.add(GameModel.fromSteamFeatureAPI(
+            topSellersResponse[i] as Map<String, dynamic>));
+      }
+      List<dynamic> newReleasesResponse =
+          parsedResponse['new_releases']['items'] as List<dynamic>;
+      List<GameModel> newReleases = [];
+      for (int i = 0; i < newReleasesResponse.length; i++) {
+        newReleases.add(GameModel.fromSteamFeatureAPI(
+            newReleasesResponse[i] as Map<String, dynamic>));
+      }
+      Map<String, List<GameModel>> exploreData = {
+        "specials": specials,
+        "coming_soon": comingSoon,
+        "top_sellers": topSellers,
+        "new_releases": newReleases
+      };
+      return exploreData;
+    } catch (e) {
+      print(e);
+      return {};
+    }
+  }
+
   static Future<GameModel> getAppDetails(
       String appID, GameModel existingGame) async {
     String url =
@@ -47,18 +101,40 @@ class SteamAPI {
 
     print(url);
     try {
-      http.Response response = await http.get(Uri.parse(url));
+      Map<String, String> requestHeaders = {
+        'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36',
+        'Cookie': 'steamCountry=CA%7C247716b8ac01de87a2d15aa982530d60;',
+        'DNT': '1',
+        'Host': 'store.steampowered.com',
+        'Referer': "https://store.steampowered.com/",
+        'sec-ch-ua':
+            '"Not A;Brand";v="99", "Chromium";v="100", "Google Chrome";v="100"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': "Windows",
+        'Sec-Fetch-Dest': 'document',
+        'Sec-Fetch-Mode': 'navigate',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-User': '?1',
+        'Upgrade-Insecure-Requests': '1',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'max-age=0',
+        'Connection': 'keep-alive'
+      };
+      http.Response response =
+          await http.get(Uri.parse(url), headers: requestHeaders);
       final Map<String, dynamic> parsedResponse = jsonDecode(response.body);
       http.Response ratingResponse = await http.get(Uri.parse(ratingURL));
       final Map<String, dynamic> parsedRatingResponse =
           jsonDecode(ratingResponse.body);
       Map<String, dynamic> data = parsedResponse[appID]["data"];
       data.addAll(parsedRatingResponse["query_summary"]);
-      print("All details data: " + data.toString());
       return GameModel.fromSteamDetailsAPI(data, existingGame);
     } catch (e) {
       print(e);
-      return null as GameModel;
+      return GameModel(
+          "", "", "", "", "", "", "", "", "", [], [], "", false, false, false);
     }
   }
 }

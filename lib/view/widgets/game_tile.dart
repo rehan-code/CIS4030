@@ -33,7 +33,8 @@ class GameTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
-                    image: NetworkImage(game.img_icon_url),
+                    image: NetworkImage(
+                        isExplore ? game.header_image : game.img_icon_url),
                     filterQuality: FilterQuality.high,
                     fit: BoxFit.fill,
                   ),

@@ -82,46 +82,20 @@ class GameModel {
         img_icon_url, "", "", [], [], "", false, false, false);
   }
 
-  factory GameModel.fromFirebase(Map<String, dynamic> data) {
-    final String category = data['category'] as String;
-    final String appid = data['appid'] as String;
-    final String name = data["name"] as String;
-    final String playtime_forever = data["playtime_forever"] as String;
-    final String playtime_2weeks = data["playtime_2weeks"] as String;
-    final String price_overview = data["price_overview"] as String;
-    final String img_icon_url = data["img_icon_url"] as String;
-    final String header_image = data["header_image"] as String;
-    final String detailed_description = data["detailed_description"] as String;
-    final List<String> publishers = data["publisher"] != null
-        ? (data["publisher"] as List<dynamic>).isNotEmpty
-            ? data["publisher"] as List<String>
-            : []
-        : [];
-    final List<String> genres = data["genres"] != null
-        ? (data["genres"] as List<dynamic>).isNotEmpty
-            ? data["genres"] as List<String>
-            : []
-        : [];
-    final String rating = data["rating"] as String;
-    final bool windows = data["windows"] as bool;
-    final bool mac = data["mac"] as bool;
-    final bool linux = data["linux"] as bool;
-    return GameModel(
-        category,
-        appid,
-        name,
-        playtime_forever,
-        playtime_2weeks,
-        price_overview,
-        img_icon_url,
-        header_image,
-        detailed_description,
-        publishers,
-        genres,
-        rating,
-        windows,
-        mac,
-        linux);
+  factory GameModel.fromSteamFeatureAPI(Map<String, dynamic> data) {
+    final String app_id = (data['id'] as int).toString();
+    final String name = (data['name'] as String);
+    final String price_overview =
+        ((data['final_price'] as int) / 100).toStringAsFixed(2) + "\$";
+    final String header_image = (data['header_image'] as String).isEmpty
+        ? "https://w7.pngwing.com/pngs/958/304/png-transparent-red-x-illustration-x-mark-check-mark-symbol-x-mark-miscellaneous-angle-hand.png"
+        : data['header_image'] as String;
+    final bool windows = data['windows_available'] as bool;
+    final bool mac = data['mac_available'] as bool;
+    final bool linux = data['linux_available'] as bool;
+
+    return GameModel("none", app_id, name, "", "", price_overview, "",
+        header_image, "", [], [], "", windows, mac, linux);
   }
 
   factory GameModel.fromSteamDetailsAPI(
@@ -158,6 +132,48 @@ class GameModel {
         existingGame.playtime_2weeks,
         price_overview,
         existingGame.img_icon_url,
+        header_image,
+        detailed_description,
+        publishers,
+        genres,
+        rating,
+        windows,
+        mac,
+        linux);
+  }
+
+  factory GameModel.fromFirebase(Map<String, dynamic> data) {
+    final String category = data['category'] as String;
+    final String appid = data['appid'] as String;
+    final String name = data["name"] as String;
+    final String playtime_forever = data["playtime_forever"] as String;
+    final String playtime_2weeks = data["playtime_2weeks"] as String;
+    final String price_overview = data["price_overview"] as String;
+    final String img_icon_url = data["img_icon_url"] as String;
+    final String header_image = data["header_image"] as String;
+    final String detailed_description = data["detailed_description"] as String;
+    final List<String> publishers = data["publisher"] != null
+        ? (data["publisher"] as List<dynamic>).isNotEmpty
+            ? data["publisher"] as List<String>
+            : []
+        : [];
+    final List<String> genres = data["genres"] != null
+        ? (data["genres"] as List<dynamic>).isNotEmpty
+            ? data["genres"] as List<String>
+            : []
+        : [];
+    final String rating = data["rating"] as String;
+    final bool windows = data["windows"] as bool;
+    final bool mac = data["mac"] as bool;
+    final bool linux = data["linux"] as bool;
+    return GameModel(
+        category,
+        appid,
+        name,
+        playtime_forever,
+        playtime_2weeks,
+        price_overview,
+        img_icon_url,
         header_image,
         detailed_description,
         publishers,

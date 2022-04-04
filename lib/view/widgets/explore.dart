@@ -6,7 +6,8 @@ import 'package:my_games_tracker/view/widgets/recommended_card.dart';
 import 'package:my_games_tracker/view/widgets/search_bar.dart';
 
 class Explore extends StatefulWidget {
-  const Explore({Key? key}) : super(key: key);
+  final Map<String, List<GameModel>> explorePageData;
+  const Explore({Key? key, required this.explorePageData}) : super(key: key);
 
   @override
   State<Explore> createState() => _ExploreState();
@@ -33,7 +34,7 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Recommended:",
+                "Spotlight:",
                 style: TextStyle(fontSize: 18),
               ),
               IconButton(
@@ -49,8 +50,8 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              for (var game in game_data)
-                RecommendedCard(game: GameModel.fromSteamLibraryAPI(game))
+              for (var game in widget.explorePageData['specials']!)
+                RecommendedCard(game: game)
             ],
           ),
         ),
@@ -63,7 +64,7 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             tabs: [
               Tab(
                   child: Text(
-                "New & Trending",
+                "Coming Soon",
                 textAlign: TextAlign.center,
               )),
               Tab(
@@ -73,7 +74,7 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
               )),
               Tab(
                   child: Text(
-                "Whats Being Experienced",
+                "New Releases",
                 textAlign: TextAlign.center,
               )),
             ],
@@ -85,21 +86,15 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
               controller: _controller,
               children: [
                 GameList(
-                  games: game_data
-                      .map((game) => GameModel.fromSteamLibraryAPI(game))
-                      .toList(),
+                  games: widget.explorePageData['coming_soon']!,
                   isExplore: true,
                 ),
                 GameList(
-                  games: game_data
-                      .map((game) => GameModel.fromSteamLibraryAPI(game))
-                      .toList(),
+                  games: widget.explorePageData['top_sellers']!,
                   isExplore: true,
                 ),
                 GameList(
-                  games: game_data
-                      .map((game) => GameModel.fromSteamLibraryAPI(game))
-                      .toList(),
+                  games: widget.explorePageData['new_releases']!,
                   isExplore: true,
                 ),
               ],

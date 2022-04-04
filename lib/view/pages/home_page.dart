@@ -12,26 +12,18 @@ import '../widgets/theme_provider.dart';
 import '/view/widgets/home_widget.dart';
 import '../../services/firestore.dart';
 
-class Random extends StatefulWidget {
-  final String steamID;
-  const Random({Key? key, required this.steamID}) : super(key: key);
-
-  @override
-  State<Random> createState() => RandomState();
-}
-
-class RandomState extends State<Random> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 class HomePage extends StatefulWidget {
   final String steamID;
+  final List<GameModel> allGames;
+  final Map<String, List<GameModel>> explorePageData;
   //SettingsDrawer settingsDrawer;
 
-  const HomePage({Key? key, required this.steamID}) : super(key: key);
+  const HomePage(
+      {Key? key,
+      required this.steamID,
+      required this.allGames,
+      required this.explorePageData})
+      : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -56,27 +48,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     _widgetOptions.addAll(<Widget>[
-      FutureBuilder<List<GameModel>>(
-        future: SteamAPI.getPlayerLibrary(widget.steamID),
-        builder: (BuildContext context, AsyncSnapshot<List<GameModel>> s) {
-          if (!s.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).indicatorColor),
-            );
-          } else if (s.hasError) {
-            return ErrorText("Error: Could not fetch the player's library.",
-                FontWeight.normal, 25.0);
-          } else {
-            print("User Library: " + (s.data!).toString());
-            FireStore.updateAllUserGames(s.data!);
-            return HomeWidget(allGames: s.data!);
-          }
-        },
+      HomeWidget(
+        allGames: widget.allGames,
       ),
-
-      // HomeWidget(),
-      Explore(),
+      Explore(explorePageData: widget.explorePageData),
       Center(
           child: Text(
         'List Page',
