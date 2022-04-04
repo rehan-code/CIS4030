@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_games_tracker/firebase_options.dart';
 import 'package:my_games_tracker/view/pages/login_page.dart';
 import 'package:my_games_tracker/view/widgets/theme_provider.dart';
@@ -18,7 +19,9 @@ Future<void> main() async {
     print("An exception occurred when trying to establish the DB connection.");
     print("Error: " + e.toString());
   }
-  runApp(MyApp(themeProvider));
+
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(MyApp(themeProvider)));
 }
 
 class MyApp extends StatelessWidget {

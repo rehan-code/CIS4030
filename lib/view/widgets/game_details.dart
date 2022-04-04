@@ -43,7 +43,15 @@ class _GameInfoState extends State<GameInfo> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(controller: controller, children: [
           widget.gameModel.appid.isEmpty
-              ? Text("Not game")
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 275),
+                  child: Center(
+                    child: Text(
+                      "Not A Game",
+                      style: TextStyle(fontSize: 48),
+                    ),
+                  ),
+                )
               : displayGameInfo(widget.gameModel, widget.isExplore),
         ]),
       ),
