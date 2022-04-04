@@ -2,45 +2,33 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/player_summary.dart';
-import 'package:my_games_tracker/services/steamAPI.dart';
 import 'package:my_games_tracker/view/widgets/error_text.dart';
 import 'package:my_games_tracker/view/widgets/explore.dart';
 import 'package:my_games_tracker/view/widgets/settings_drawer.dart';
 import 'package:provider/provider.dart';
-import '../../core/game_model.dart';
 import '../widgets/theme_provider.dart';
 import '/view/widgets/home_widget.dart';
-import '../../services/firestore.dart';
-
-class Random extends StatefulWidget {
-  final String steamID;
-  const Random({Key? key, required this.steamID}) : super(key: key);
-
-  @override
-  State<Random> createState() => RandomState();
-}
-
-class RandomState extends State<Random> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
 
 class HomePage extends StatefulWidget {
-  final String steamID;
+  String steamID;
   //SettingsDrawer settingsDrawer;
 
-  const HomePage({Key? key, required this.steamID}) : super(key: key);
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeWidget(),
+    Explore(),
+    Center(
+        child: Text(
+      'List Page',
+    )),
+  ];
+
+  HomePage(this.steamID);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  // ignore: prefer_final_fields
-  static List<Widget> _widgetOptions = [];
-
   int _selectedIndex = 0;
 
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -53,40 +41,15 @@ class _HomePageState extends State<HomePage> {
           });
   }
 
-  @override
-  void initState() {
-    _widgetOptions.addAll(<Widget>[
-      FutureBuilder<List<GameModel>>(
-        future: SteamAPI.getPlayerLibrary(widget.steamID),
-        builder: (BuildContext context, AsyncSnapshot<List<GameModel>> s) {
-          if (!s.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).indicatorColor),
-            );
-          } else if (s.hasError) {
-            return ErrorText("Error: Could not fetch the player's library.",
-                FontWeight.normal, 25.0);
-          } else {
-            print("User Library: " + (s.data!).toString());
-            FireStore.updateAllUserGames(s.data!);
-            return HomeWidget(allGames: s.data!);
-          }
-        },
-      ),
-
-      // HomeWidget(),
-      Explore(),
-      Center(
-          child: Text(
-        'List Page',
-      )),
-    ]);
-    super.initState();
+  Future<SettingsDrawer> loadDrawerData(
+      PlayerSummary ps, ThemeProvider theme) async {
+    await Future.delayed(Duration(seconds: 1), () => ps.buildPlayerSummary());
+    return SettingsDrawer(ps.personaName, ps.avatarFull, theme);
   }
 
   @override
   Widget build(BuildContext context) {
+    PlayerSummary summary = PlayerSummary(widget.steamID);
     final themeProvider = Provider.of<ThemeProvider>(context);
     return WillPopScope(
       onWillPop: () async => false,
@@ -99,7 +62,7 @@ class _HomePageState extends State<HomePage> {
         home: SafeArea(
           child: Scaffold(
             key: _drawerKey,
-            body: _widgetOptions.elementAt(_selectedIndex),
+            body: HomePage._widgetOptions.elementAt(_selectedIndex),
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _selectedIndex,
               showSelectedLabels: false,
@@ -131,11 +94,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            endDrawer:
-                //  SettingsDrawer(FireStore.getPlayerSummary(widget.steamID), themeProvider)
-                FutureBuilder<PlayerSummary>(
-              future: FireStore.getPlayerSummary(),
-              builder: (BuildContext context, AsyncSnapshot<PlayerSummary> s) {
+            endDrawer: FutureBuilder(
+              future: loadDrawerData(summary, themeProvider),
+              builder: (BuildContext context, AsyncSnapshot<SettingsDrawer> s) {
                 if (!s.hasData) {
                   return Center(
                     child: CircularProgressIndicator(
@@ -145,16 +106,16 @@ class _HomePageState extends State<HomePage> {
                   return ErrorText("Error: Could not fetch data for drawer.",
                       FontWeight.normal, 25.0);
                 } else {
-                  return SettingsDrawer(s.data!, themeProvider);
+                  final settingsDrawer = s.data;
 
-                  // if (settingsDrawer != null) {
-                  //   return settingsDrawer;
-                  // } else {
-                  //   return ErrorText(
-                  //       "Error: A response from server received, but was null.",
-                  //       FontWeight.normal,
-                  //       25.0);
-                  // }
+                  if (settingsDrawer != null) {
+                    return settingsDrawer;
+                  } else {
+                    return ErrorText(
+                        "Error: A response from server received, but was null.",
+                        FontWeight.normal,
+                        25.0);
+                  }
                 }
               },
             ),
