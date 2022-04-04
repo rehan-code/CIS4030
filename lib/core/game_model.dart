@@ -191,15 +191,4 @@ class GameModel {
   bool equals(GameModel game) {
     return _appid == game._appid;
   }
-
-  void printGameModel() {
-    print("<-------------------------------------------------->");
-    print("title: " + title);
-    print("image: " + image);
-    print("description: " + description);
-    print("playTime: " + playtime.toString());
-    print("rating: " + rating.toString());
-    print("category: " + category);
-    print("<-------------------------------------------------->");
-  }
 }

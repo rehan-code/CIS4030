@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.videogame_asset,
+                    Icons.search,
                     size: 40,
                   ),
                   label: '',
