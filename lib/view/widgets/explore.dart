@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/services/steamAPI.dart';
 import 'package:my_games_tracker/view/widgets/game_list.dart';
 import 'package:my_games_tracker/view/widgets/recommended_card.dart';
 import 'package:my_games_tracker/view/widgets/search_bar.dart';
@@ -15,6 +16,7 @@ class Explore extends StatefulWidget {
 
 class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
   late TabController _controller;
+  late List<Map<String, String>> _searchGameData;
 
   @override
   void initState() {
