@@ -36,7 +36,7 @@ class GameTile extends StatelessWidget {
                     image: NetworkImage(
                         isExplore ? game.header_image : game.img_icon_url),
                     filterQuality: FilterQuality.high,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitHeight,
                   ),
                 ),
               ),

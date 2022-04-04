@@ -26,6 +26,16 @@ class _HomeWidgetState extends State<HomeWidget>
     _controller = TabController(length: 5, vsync: this);
   }
 
+  List<GameModel> sortTheDamnDanielList(List<GameModel> data) {
+    List<GameModel> newList = [];
+    for (GameModel g in data) {
+      newList.add(g);
+    }
+    newList.sort(((a, b) => double.parse(b.playtime_2weeks)
+        .compareTo(double.parse(a.playtime_2weeks))));
+    return newList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -94,9 +104,25 @@ class _HomeWidgetState extends State<HomeWidget>
           child: Container(
             height: 100,
             child: TabBarView(controller: _controller, children: [
-              GameList(
-                games: widget.allGames,
-                isExplore: false,
+              // GameList(
+              //   games: sortTheDamnDanielList(widget.allGames),
+              //   isExplore: false,
+              // ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FireStore.getCategoryList("allGames"),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  List<GameModel> allGames = snapshot.data!.docs
+                      .map((doc) => GameModel.fromFirebase(
+                          (doc as DocumentSnapshot).data()
+                              as Map<String, dynamic>))
+                      .toList();
+                  return GameList(
+                    games: sortTheDamnDanielList(allGames),
+                    isExplore: false,
+                  );
+                },
               ),
               StreamBuilder<QuerySnapshot>(
                 stream: FireStore.getCategoryList("playingGames"),
@@ -109,7 +135,7 @@ class _HomeWidgetState extends State<HomeWidget>
                               as Map<String, dynamic>))
                       .toList();
                   return GameList(
-                    games: playingGames,
+                    games: sortTheDamnDanielList(playingGames),
                     isExplore: false,
                   );
                 },
@@ -128,7 +154,7 @@ class _HomeWidgetState extends State<HomeWidget>
                               as Map<String, dynamic>))
                       .toList();
                   return GameList(
-                    games: playingGames,
+                    games: sortTheDamnDanielList(playingGames),
                     isExplore: false,
                   );
                 },
@@ -147,7 +173,7 @@ class _HomeWidgetState extends State<HomeWidget>
                               as Map<String, dynamic>))
                       .toList();
                   return GameList(
-                    games: playingGames,
+                    games: sortTheDamnDanielList(playingGames),
                     isExplore: false,
                   );
                 },
@@ -166,7 +192,7 @@ class _HomeWidgetState extends State<HomeWidget>
                               as Map<String, dynamic>))
                       .toList();
                   return GameList(
-                    games: playingGames,
+                    games: sortTheDamnDanielList(playingGames),
                     isExplore: false,
                   );
                 },

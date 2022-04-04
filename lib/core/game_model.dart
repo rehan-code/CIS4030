@@ -13,7 +13,7 @@ class GameModel {
   String _playtime_forever = "";
   String get playtime_forever => _playtime_forever;
   String _playtime_2weeks = "";
-  String get playtime_2weeks => _playtime_forever;
+  String get playtime_2weeks => _playtime_2weeks;
   String _price_overview = "";
   String get price_overview => _price_overview;
   String _img_icon_url = "";
