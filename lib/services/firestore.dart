@@ -151,4 +151,17 @@ class FireStore {
       return "";
     }
   }
+
+  static Future<bool> doesGameExist(String gameId) async {
+    try {
+      DocumentSnapshot snapshot =
+          await users.doc(_steamID).collection("allGames").doc(gameId).get();
+      if (snapshot.exists == true) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
 }

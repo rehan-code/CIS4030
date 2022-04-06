@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_games_tracker/core/game_data.dart';
 import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/services/firestore.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GameOptions extends StatefulWidget {
   final GameModel game;
@@ -12,60 +13,101 @@ class GameOptions extends StatefulWidget {
 }
 
 class _GameOptionsState extends State<GameOptions> {
-  String _currCategory = "";
+  String _currentCategory = "";
+  bool _isInLibrary = false;
 
-  void setCurrCategory() async {
-    _currCategory = await FireStore.getCategory(widget.game.appid);
+  void setCurrentCategory() async {
+    _currentCategory = await FireStore.getCategory(widget.game.appid);
+  }
+
+  void doesGameExist() async {
+    bool exists = await FireStore.doesGameExist(widget.game.appid);
+    setState(() {
+      _isInLibrary = exists;
+    });
   }
 
   @override
+  void initState() {
+    doesGameExist();
+  }
+
+  List<PopupMenuEntry<String>> inLibraryWidgets() {
+    return [
+      PopupMenuItem<String>(
+        value: 'allGames',
+        child: MenuTile(
+          title: 'All',
+          selected: (_currentCategory == "allGames"),
+        ),
+      ),
+      PopupMenuItem<String>(
+        value: 'playingGames',
+        child: MenuTile(
+          title: 'Playing',
+          selected: (_currentCategory == "playingGames"),
+        ),
+      ),
+      PopupMenuItem<String>(
+        value: 'completeGames',
+        child: MenuTile(
+          title: 'Complete',
+          selected: (_currentCategory == "completeGames"),
+        ),
+      ),
+      PopupMenuItem<String>(
+        value: 'plannedGames',
+        child: MenuTile(
+          title: 'Plan to Play',
+          selected: (_currentCategory == "plannedGames"),
+        ),
+      ),
+      PopupMenuItem<String>(
+        value: 'unplayedGames',
+        child: MenuTile(
+          title: 'Unplayed',
+          selected: (_currentCategory == "unplayedGames"),
+        ),
+      ),
+    ];
+  }
+
+  List<PopupMenuEntry<String>> inExploreWidgets() {
+    return [
+      PopupMenuItem<String>(
+        value: 'steamPage',
+        child: MenuTile(
+          title: 'Steam Page',
+          selected: (_currentCategory == "steamPage"),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> exploreWidgets = [];
+
+  @override
   Widget build(BuildContext context) {
-    setCurrCategory();
+    setCurrentCategory();
     return PopupMenuButton<String>(
-      onSelected: (String result) {
-        FireStore.updateCategory(widget.game.appid, _currCategory, result);
-        setState(() {
-          _currCategory = result;
-        });
-      },
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-        PopupMenuItem<String>(
-          value: 'allGames',
-          child: MenuTile(
-            title: 'All',
-            selected: (_currCategory == "allGames"),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'playingGames',
-          child: MenuTile(
-            title: 'Playing',
-            selected: (_currCategory == "playingGames"),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'completeGames',
-          child: MenuTile(
-            title: 'Complete',
-            selected: (_currCategory == "completeGames"),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'plannedGames',
-          child: MenuTile(
-            title: 'Plan to Play',
-            selected: (_currCategory == "plannedGames"),
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: 'unplayedGames',
-          child: MenuTile(
-            title: 'Unplayed',
-            selected: (_currCategory == "unplayedGames"),
-          ),
-        ),
-      ],
-    );
+        onSelected: (String result) async {
+          if (result == "steamPage") {
+            try {
+              await launch(
+                  "https://store.steampowered.com/app/" + widget.game.appid);
+            } catch (e) {
+              throw 'Could not launch https://store.steampowered.com/app/' +
+                  widget.game.appid;
+            }
+            return;
+          }
+          FireStore.updateCategory(widget.game.appid, _currentCategory, result);
+          setState(() {
+            _currentCategory = result;
+          });
+        },
+        itemBuilder: (BuildContext context) =>
+            (_isInLibrary ? inLibraryWidgets() : inExploreWidgets()));
   }
 }
 

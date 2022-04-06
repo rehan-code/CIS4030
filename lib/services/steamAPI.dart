@@ -141,15 +141,15 @@ class SteamAPI {
   static Future<List<Map<String, String>>> getSearchData() async {
     String url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/";
     try {
-      http.Response response =
-            await http.get(Uri.parse(url));
+      http.Response response = await http.get(Uri.parse(url));
       final Map<String, dynamic> parsedResponse = jsonDecode(response.body);
       List<dynamic> appList = parsedResponse['applist']['apps'];
-      List<Map<String,String>> returnList = [];
+      List<Map<String, String>> returnList = [];
       for (var app in appList) {
         if (app['name'].isEmpty) continue;
         // print(app["name"]);
-        returnList.add({"name": app["name"], "appid": (app["appid"] as int).toString()});
+        returnList.add(
+            {"name": app["name"], "appid": (app["appid"] as int).toString()});
       }
       return returnList;
     } catch (e) {
@@ -158,11 +158,14 @@ class SteamAPI {
     }
   }
 
-  static Future<List<GameModel>> getGameModelsFromList(List<String> appList) async {
+  static Future<List<GameModel>> getGameModelsFromList(
+      List<String> appList) async {
     List<GameModel> returnList = [];
     for (var app in appList) {
-      GameModel gameModel = await getAppDetails(app, GameModel(
-          "", "", "", "", "", "", "", "", "", [], [], "", false, false, false));
+      GameModel gameModel = await getAppDetails(
+          app,
+          GameModel("", "", "", "", "", "", "", "", "", [], [], "", false,
+              false, false));
       returnList.add(gameModel);
     }
 
@@ -170,7 +173,8 @@ class SteamAPI {
   }
 
   static Future<List<GameModel>> getSearchStuff(String searchKey) async {
-    String url = "https://store.steampowered.com/search/suggest?term=$searchKey&f=games&cc=CA";
+    String url =
+        "https://store.steampowered.com/search/suggest?term=$searchKey&f=games&cc=CA";
     Map<String, String> requestHeaders = {
       'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36',
@@ -197,9 +201,10 @@ class SteamAPI {
     List<String> splitBySpace = response.body.split(" ");
     List<String> appList = [];
 
-    for(String s in splitBySpace) {
+    for (String s in splitBySpace) {
       List<String> splitByEquals = s.split("=");
-      if (splitByEquals.length == 0 || splitByEquals[0] != "data-ds-appid") continue;
+      if (splitByEquals.length == 0 || splitByEquals[0] != "data-ds-appid")
+        continue;
       appList.add(splitByEquals[1].replaceAll("\"", ""));
     }
     List<GameModel> endGame = await getGameModelsFromList(appList);
