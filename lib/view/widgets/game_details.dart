@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:my_games_tracker/core/game_model.dart';
+import 'package:my_games_tracker/view/widgets/detail_text.dart';
 import 'package:my_games_tracker/view/widgets/game_options.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+const double detailTitleFontSize = 24;
+const double detailFontSize = 16;
 
 Future showSteamAppBottomSheet(var context, GameModel game, bool isExplore) {
   return showModalBottomSheet(
@@ -43,8 +47,8 @@ class _GameInfoState extends State<GameInfo> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(controller: controller, children: [
           widget.gameModel.appid.isEmpty
-              ? Padding(
-                  padding: const EdgeInsets.only(top: 275),
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 275),
                   child: Center(
                     child: Text(
                       "Not A Game",
@@ -67,10 +71,8 @@ Widget displayGameInfo(GameModel game, bool isExplore) => Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(
-              child: Text(
-                game.name,
-                style: const TextStyle(fontSize: 24),
-              ),
+              child:
+                  DetailText(game.name, FontWeight.normal, detailTitleFontSize),
             ),
             GameOptions(game: game)
           ],
@@ -83,30 +85,34 @@ Widget displayGameInfo(GameModel game, bool isExplore) => Column(
           height: 20,
         ),
 
-        Text(
-          isExplore
-              ? "Price: " + game.price_overview
-              : "Play Time: " + game.playtime_forever + " hours",
-        ),
-        Text("Score: " + game.rating + "/10"),
+        DetailText(
+            isExplore
+                ? "Price: " + game.price_overview
+                : "Play Time: " + game.playtime_forever + " hours",
+            FontWeight.normal,
+            detailFontSize),
+        DetailText("Score: " + game.rating + " / 10", FontWeight.normal,
+            detailFontSize),
         Wrap(
           children: [
-            const Text(
-              "Publishers: ",
-            ),
+            DetailText("Publishers: ", FontWeight.normal, detailFontSize),
             for (int i = 0; i < game.publishers.length; i++)
-              Text(game.publishers[i] +
-                  (i == game.publishers.length - 1 ? "" : ", ")),
+              DetailText(
+                  game.publishers[i] +
+                      (i == game.publishers.length - 1 ? "" : ", "),
+                  FontWeight.normal,
+                  detailFontSize),
           ],
         ),
 
         Wrap(
           children: [
-            const Text(
-              "Genres: ",
-            ),
+            DetailText("Genres: ", FontWeight.normal, detailFontSize),
             for (int i = 0; i < game.genres.length; i++)
-              Text(game.genres[i] + (i == game.genres.length - 1 ? "" : ", "))
+              DetailText(
+                  game.genres[i] + (i == game.genres.length - 1 ? "" : ", "),
+                  FontWeight.normal,
+                  detailFontSize),
           ],
         ),
 
@@ -116,6 +122,7 @@ Widget displayGameInfo(GameModel game, bool isExplore) => Column(
 
         HtmlWidget(
           game.detailed_description,
+          textStyle: const TextStyle(fontSize: detailFontSize),
           onTapUrl: (url) async {
             try {
               return await launch(url);

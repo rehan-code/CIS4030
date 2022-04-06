@@ -86,7 +86,7 @@ class GameModel {
     final String app_id = (data['id'] as int).toString();
     final String name = (data['name'] as String);
     final String price_overview =
-        ((data['final_price'] as int) / 100).toStringAsFixed(2) + "\$";
+        "\$" + ((data['final_price'] as int) / 100).toStringAsFixed(2);
     final String header_image = (data['header_image'] as String).isEmpty
         ? "https://w7.pngwing.com/pngs/958/304/png-transparent-red-x-illustration-x-mark-check-mark-symbol-x-mark-miscellaneous-angle-hand.png"
         : data['header_image'] as String;
