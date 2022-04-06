@@ -36,7 +36,7 @@ class _ExploreState extends State<Explore> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Spotlight:",
+                "Specials:",
                 style: TextStyle(fontSize: 18),
               ),
               IconButton(

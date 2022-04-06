@@ -52,7 +52,7 @@ class RecommendedCard extends StatelessWidget {
                       child: Text(
                         game.name,
                         style: TextStyle(
-                          // color: Colors.white,
+                          color: Colors.white,
                           // color: Theme.of(context).secondaryHeaderColor,
                           fontSize: 14,
                         ),

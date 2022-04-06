@@ -78,8 +78,8 @@ class GameModel {
             (data['img_icon_url'] as String) +
             ".jpg";
 
-    return GameModel("none", appid, name, playtime_forever, playtime_2weeks, "",
-        img_icon_url, "", "", [], [], "", false, false, false);
+    return GameModel("allGames", appid, name, playtime_forever, playtime_2weeks,
+        "", img_icon_url, "", "", [], [], "", false, false, false);
   }
 
   factory GameModel.fromSteamFeatureAPI(Map<String, dynamic> data) {

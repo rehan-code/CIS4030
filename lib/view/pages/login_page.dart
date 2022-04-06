@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 5.0),
-            child: Image.asset("images/pineapple.png"),
+            child: Image.asset("assets/images/pineapple.png"),
           ),
           const Text(
             "My Game Tracker",
@@ -23,8 +23,8 @@ class LoginScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 decorationStyle: TextDecorationStyle.wavy,
-                fontStyle: FontStyle.italic,
-                fontWeight: FontWeight.w500),
+                // fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w900),
           ),
           SteamLoginButton(themeProvider)
         ],

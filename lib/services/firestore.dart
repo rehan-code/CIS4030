@@ -38,6 +38,8 @@ class FireStore {
   static Future<void> updateAllUserGames(List<GameModel> newLibrary) async {
     List<GameModel> currLibrary = [];
     List<GameModel> updatedGamesList = [];
+    List<GameModel> unplayedGames = [];
+    List<GameModel> playingGames = [];
 
     try {
       QuerySnapshot snapshot =
@@ -61,6 +63,15 @@ class FireStore {
         updatedGamesList = newLibrary;
       }
 
+      for (var game in updatedGamesList) {
+        if (game.playtime_forever == "0.0" && game.category == "allGames") {
+          unplayedGames.add(game);
+        } else if (game.playtime_2weeks != "0.00" &&
+            game.category == "allGames") {
+          playingGames.add(game);
+        }
+      }
+
       // for(int i = 0; i < newLibrary.length; i++){
       //   if(currLibrary.contains(newLibrary[i].appid)){
       //     updatedGamesList.add(newLibrary[i]);
@@ -70,6 +81,30 @@ class FireStore {
         await users
             .doc(_steamID)
             .collection("allGames")
+            .doc(game.appid)
+            .set(game.toJSON())
+            .then((value) => print(game.name + " added!"))
+            .catchError((error) => print(
+                "Couldn't update User with steamID: '" +
+                    _steamID +
+                    "'s games to DB: $error"));
+      }
+      for (var game in unplayedGames) {
+        await users
+            .doc(_steamID)
+            .collection("unplayedGames")
+            .doc(game.appid)
+            .set(game.toJSON())
+            .then((value) => print(game.name + " added!"))
+            .catchError((error) => print(
+                "Couldn't update User with steamID: '" +
+                    _steamID +
+                    "'s games to DB: $error"));
+      }
+      for (var game in playingGames) {
+        await users
+            .doc(_steamID)
+            .collection("playingGames")
             .doc(game.appid)
             .set(game.toJSON())
             .then((value) => print(game.name + " added!"))

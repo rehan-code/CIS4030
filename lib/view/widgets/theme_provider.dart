@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
@@ -13,6 +14,7 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   static final darkTheme = ThemeData(
+      textTheme: GoogleFonts.ubuntuTextTheme(),
       scaffoldBackgroundColor: Colors.grey.shade900,
       primaryColor: Colors.black,
       colorScheme: const ColorScheme.dark(secondary: Colors.deepPurple),
@@ -25,6 +27,7 @@ class MyThemes {
       secondaryHeaderColor: Colors.white);
 
   static final lightTheme = ThemeData(
+    textTheme: GoogleFonts.ubuntuTextTheme(),
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
     colorScheme: const ColorScheme.light(secondary: Colors.deepPurple),

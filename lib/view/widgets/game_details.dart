@@ -74,7 +74,7 @@ Widget displayGameInfo(GameModel game, bool isExplore) => Column(
               child:
                   DetailText(game.name, FontWeight.normal, detailTitleFontSize),
             ),
-            GameOptions(game: game)
+            GameOptions(game: game, isExplore: isExplore)
           ],
         ),
         const SizedBox(

@@ -65,7 +65,7 @@ class GameTile extends StatelessWidget {
                     ]),
               ),
             ),
-            GameOptions(game: game),
+            GameOptions(game: game, isExplore: true),
           ],
         )),
       ),

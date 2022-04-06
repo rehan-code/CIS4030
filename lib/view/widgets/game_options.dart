@@ -4,9 +4,13 @@ import 'package:my_games_tracker/core/game_model.dart';
 import 'package:my_games_tracker/services/firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'error_text.dart';
+
 class GameOptions extends StatefulWidget {
   final GameModel game;
-  const GameOptions({Key? key, required this.game}) : super(key: key);
+  final bool isExplore;
+  const GameOptions({Key? key, required this.game, required this.isExplore})
+      : super(key: key);
 
   @override
   State<GameOptions> createState() => _GameOptionsState();
@@ -14,22 +18,15 @@ class GameOptions extends StatefulWidget {
 
 class _GameOptionsState extends State<GameOptions> {
   String _currentCategory = "";
-  bool _isInLibrary = false;
 
   void setCurrentCategory() async {
     _currentCategory = await FireStore.getCategory(widget.game.appid);
   }
 
-  void doesGameExist() async {
-    bool exists = await FireStore.doesGameExist(widget.game.appid);
-    setState(() {
-      _isInLibrary = exists;
-    });
-  }
-
-  @override
-  void initState() {
-    doesGameExist();
+  Future<List<PopupMenuEntry<String>>> doesGameExist() async {
+    return await FireStore.doesGameExist(widget.game.appid)
+        ? inLibraryWidgets()
+        : inExploreWidgets();
   }
 
   List<PopupMenuEntry<String>> inLibraryWidgets() {
@@ -89,25 +86,40 @@ class _GameOptionsState extends State<GameOptions> {
   @override
   Widget build(BuildContext context) {
     setCurrentCategory();
-    return PopupMenuButton<String>(
-        onSelected: (String result) async {
-          if (result == "steamPage") {
-            try {
-              await launch(
-                  "https://store.steampowered.com/app/" + widget.game.appid);
-            } catch (e) {
-              throw 'Could not launch https://store.steampowered.com/app/' +
-                  widget.game.appid;
-            }
-            return;
+    return FutureBuilder(
+        future: doesGameExist(),
+        builder: (BuildContext, AsyncSnapshot<List<PopupMenuEntry<String>>> s) {
+          if (!s.hasData) {
+            return Center(
+              child: PopupMenuButton<String>(
+                itemBuilder: (context) => [],
+              ),
+            );
+          } else if (s.hasError) {
+            return ErrorText("Error", FontWeight.normal, 18.0);
+          } else {
+            return PopupMenuButton<String>(
+              onSelected: (String result) async {
+                if (result == "steamPage") {
+                  try {
+                    await launch("https://store.steampowered.com/app/" +
+                        widget.game.appid);
+                  } catch (e) {
+                    throw 'Could not launch https://store.steampowered.com/app/' +
+                        widget.game.appid;
+                  }
+                  return;
+                }
+                await FireStore.updateCategory(
+                    widget.game.appid, _currentCategory, result);
+                setState(() {
+                  _currentCategory = result;
+                });
+              },
+              itemBuilder: (context) => s.data!,
+            );
           }
-          FireStore.updateCategory(widget.game.appid, _currentCategory, result);
-          setState(() {
-            _currentCategory = result;
-          });
-        },
-        itemBuilder: (BuildContext context) =>
-            (_isInLibrary ? inLibraryWidgets() : inExploreWidgets()));
+        });
   }
 }
 

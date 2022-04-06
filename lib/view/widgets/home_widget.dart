@@ -112,7 +112,13 @@ class _HomeWidgetState extends State<HomeWidget>
                 stream: FireStore.getCategoryList("allGames"),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CircularProgressIndicator()));
+                  }
                   List<GameModel> allGames = snapshot.data!.docs
                       .map((doc) => GameModel.fromFirebase(
                           (doc as DocumentSnapshot).data()
@@ -128,7 +134,13 @@ class _HomeWidgetState extends State<HomeWidget>
                 stream: FireStore.getCategoryList("playingGames"),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CircularProgressIndicator()));
+                  }
                   List<GameModel> playingGames = snapshot.data!.docs
                       .map((doc) => GameModel.fromFirebase(
                           (doc as DocumentSnapshot).data()
@@ -147,7 +159,13 @@ class _HomeWidgetState extends State<HomeWidget>
                 stream: FireStore.getCategoryList("completeGames"),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CircularProgressIndicator()));
+                  }
                   List<GameModel> playingGames = snapshot.data!.docs
                       .map((doc) => GameModel.fromFirebase(
                           (doc as DocumentSnapshot).data()
@@ -166,7 +184,13 @@ class _HomeWidgetState extends State<HomeWidget>
                 stream: FireStore.getCategoryList("plannedGames"),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CircularProgressIndicator()));
+                  }
                   List<GameModel> playingGames = snapshot.data!.docs
                       .map((doc) => GameModel.fromFirebase(
                           (doc as DocumentSnapshot).data()
@@ -185,7 +209,13 @@ class _HomeWidgetState extends State<HomeWidget>
                 stream: FireStore.getCategoryList("unplayedGames"),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (!snapshot.hasData) return CircularProgressIndicator();
+                  if (!snapshot.hasData) {
+                    return const Center(
+                        child: SizedBox(
+                            width: 100,
+                            height: 100,
+                            child: CircularProgressIndicator()));
+                  }
                   List<GameModel> playingGames = snapshot.data!.docs
                       .map((doc) => GameModel.fromFirebase(
                           (doc as DocumentSnapshot).data()
