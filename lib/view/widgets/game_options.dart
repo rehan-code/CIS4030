@@ -21,16 +21,17 @@ class _GameOptionsState extends State<GameOptions> {
 
   void setCurrentCategory() async {
     String category = await FireStore.getCategory(widget.game.appid);
-    setState(() {
-      _currentCategory = category;
-    });
+    if (mounted) {
+      setState(() {
+        _currentCategory = category;
+      });
+    }
   }
 
   Future<List<PopupMenuEntry<String>>> doesGameExist() async {
     return await FireStore.doesGameExist(widget.game.appid)
         ? inLibraryWidgets()
         : inExploreWidgets();
-    
   }
 
   List<PopupMenuEntry<String>> inLibraryWidgets() {
@@ -116,9 +117,11 @@ class _GameOptionsState extends State<GameOptions> {
                 }
                 await FireStore.updateCategory(
                     widget.game.appid, _currentCategory, result);
-                setState(() {
-                  _currentCategory = result;
-                });
+                if (mounted) {
+                  setState(() {
+                    _currentCategory = result;
+                  });
+                }
               },
               itemBuilder: (context) => s.data!,
             );
