@@ -14,7 +14,7 @@ class ThemeProvider extends ChangeNotifier {
 
 class MyThemes {
   static final darkTheme = ThemeData(
-      textTheme: GoogleFonts.ubuntuTextTheme(),
+      // textTheme: GoogleFonts.ubuntuTextTheme(),
       scaffoldBackgroundColor: Colors.grey.shade900,
       primaryColor: Colors.black,
       colorScheme: const ColorScheme.dark(secondary: Colors.deepPurple),
@@ -27,7 +27,7 @@ class MyThemes {
       secondaryHeaderColor: Colors.white);
 
   static final lightTheme = ThemeData(
-    textTheme: GoogleFonts.ubuntuTextTheme(),
+    // textTheme: GoogleFonts.ubuntuTextTheme(),
     scaffoldBackgroundColor: Colors.white,
     primaryColor: Colors.white,
     colorScheme: const ColorScheme.light(secondary: Colors.deepPurple),

@@ -63,20 +63,17 @@ class FireStore {
         updatedGamesList = newLibrary;
       }
 
-      for (var game in updatedGamesList) {
-        if (game.playtime_forever == "0.0" && game.category == "allGames") {
+      updatedGamesList = updatedGamesList.map((game) {if (game.playtime_forever == "0.0" && game.category == "allGames") {
+          game.category = "unplayedGames";
           unplayedGames.add(game);
+          return game;
         } else if (game.playtime_2weeks != "0.00" &&
             game.category == "allGames") {
+          game.category = "playingGames";
           playingGames.add(game);
-        }
-      }
+          return game;
+        } return game;}).toList();
 
-      // for(int i = 0; i < newLibrary.length; i++){
-      //   if(currLibrary.contains(newLibrary[i].appid)){
-      //     updatedGamesList.add(newLibrary[i]);
-      //   }
-      // }
       for (var game in updatedGamesList) {
         await users
             .doc(_steamID)

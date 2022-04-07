@@ -20,13 +20,17 @@ class _GameOptionsState extends State<GameOptions> {
   String _currentCategory = "";
 
   void setCurrentCategory() async {
-    _currentCategory = await FireStore.getCategory(widget.game.appid);
+    String category = await FireStore.getCategory(widget.game.appid);
+    setState(() {
+      _currentCategory = category;
+    });
   }
 
   Future<List<PopupMenuEntry<String>>> doesGameExist() async {
     return await FireStore.doesGameExist(widget.game.appid)
         ? inLibraryWidgets()
         : inExploreWidgets();
+    
   }
 
   List<PopupMenuEntry<String>> inLibraryWidgets() {
@@ -85,7 +89,6 @@ class _GameOptionsState extends State<GameOptions> {
 
   @override
   Widget build(BuildContext context) {
-    setCurrentCategory();
     return FutureBuilder(
         future: doesGameExist(),
         builder: (BuildContext, AsyncSnapshot<List<PopupMenuEntry<String>>> s) {
@@ -98,6 +101,7 @@ class _GameOptionsState extends State<GameOptions> {
           } else if (s.hasError) {
             return ErrorText("Error", FontWeight.normal, 18.0);
           } else {
+            setCurrentCategory();
             return PopupMenuButton<String>(
               onSelected: (String result) async {
                 if (result == "steamPage") {
